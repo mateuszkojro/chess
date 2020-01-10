@@ -7,17 +7,7 @@ class Board:
 
     def __init__(self):
 
-        self.cur_state = [
-            [Piece("pawn", (0, 0), "white"), Piece("pawn", (0, 0), "white"), Piece("pawn", (0, 0), "white"),
-             Piece("pawn", (0, 0), "white"), Piece("pawn", (0, 0), "white"), Piece("pawn", (0, 0), "white"),
-             Piece("pawn", (0, 0), "white"), Piece("pawn", (0, 0), "white")],
-
-            [Piece("pawn", (0, 0), "white"), Piece("pawn", (0, 0), "white"), Piece("pawn", (0, 0), "white"),
-             Piece("pawn", (0, 0), "white"), Piece("pawn", (0, 0), "white"), Piece("pawn", (0, 0), "white"),
-             Piece("pawn", (0, 0), "white"), Piece("pawn", (0, 0), "white")]
-        ]
-
-        for x in range(6):
+        for x in range(8):
             temp = []
             for y in range(8):
                 temp.append(Piece(in_position=(x, y)))
@@ -53,8 +43,14 @@ class Board:
 
     def show(self):
         os.system('clear')
+
+        for i in range(8):
+            print(str(i).rjust(6), end="  ")
+        print()
+        i = 0
         for x in self.cur_state:
             print()
             for y in x:
                 print(y.type.rjust(6), end="  ")
-            print()
+            print(" ", i)
+            i = i + 1
