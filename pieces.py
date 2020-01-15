@@ -1,14 +1,12 @@
 class Position:
-    pos_x = None
-    pos_y = None
+    cur_pos = (None, None)
+    tar_pos = (None, None)
 
     def __init__(self, x, y):
-        self.pos_x = x
-        self.pos_y = y
+        self.cur_pos = x, y
 
 
 class Piece:
-
     cur_position = None
     type = None
     color = None
@@ -24,56 +22,56 @@ class Piece:
     def move(self, tar_position):
         self.cur_position = tar_position
 
-    def check_moves(self,tar_position):
+    def check_moves(self, tar_position):
         if self.type == "pawn":
-            self.check_pawn(tar_position)
+            return self.check_pawn(tar_position)
         if self.type == "rook":
-            self.check_rook(tar_position)
+            return self.check_rook(tar_position)
         if self.type == "queen":
-            self.check_queen(tar_position)
+            return self.check_queen(tar_position)
         if self.type == "bishop":
-            self.check_bishop(tar_position)
+            return self.check_bishop(tar_position)
         if self.type == "knight":
-            self.check_knight(tar_position)
+            return self.check_knight(tar_position)
 
     def check(self, tar_position):
         if self.is_chceck(tar_position):
             return False
-        if not self.chceck_moves(tar_position):
+        if not self.check_moves(tar_position):
             return False
         if not self.check_player(tar_position):
             return False
-
-
+        return True
 
     # legal moves for every piece
 
-
-
     def check_pawn(self, tar_position):
+
+        return True  # FIXME zwracam true zamiast sprawdzac
+
         if not tar_position[0] == self.cur_position[0] + 1:
             return True
         else:
             return False
-        pass
 
     def check_queen(self, tar_position):
         # zmiana w x i w y taka sama albo zmiana tylko w jednym
-        pass
+        return True
 
     def check_rook(self, tar_position):
-        pass
+        return True
 
     def check_bishop(self, tar_position):
-        pass
+        return True
 
     def check_knight(self, tar_position):
-        pass
+        return True
 
     def check_pawn(self, tar_position):
-        pass
+        return True
 
     def is_chceck(self, tar_position):
-        pass
-    def check_player(self,tar_position):
-        pass
+        return False
+
+    def check_player(self, tar_position):
+        return True
