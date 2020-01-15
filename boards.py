@@ -3,6 +3,8 @@ import os
 
 
 class Board:
+    n_move = 0
+    cur_color = "white"
     cur_state = []
 
     def __init__(self):
@@ -40,6 +42,23 @@ class Board:
                              Piece("queen", (7, 4), "white"), Piece("bishop", (7, 5), "white"),
                              Piece("knight", (7, 6), "white"),
                              Piece("rook", (7, 7), "white")]
+
+    def move(self, cur_pos, end_pos):
+        moved_piece = self.cur_state[cur_pos[0]][cur_pos[1]]
+        if not self.check_color(moved_piece):
+            return False
+        if not moved_piece.check(end_pos):
+            return False
+        moved_piece.move(end_pos)
+        self.cur_state[cur_pos[0]][cur_pos[1]] = Piece()
+        self.cur_state[end_pos[0]][end_pos[1]] = moved_piece
+        return True
+
+    def check_color(self, piece):
+        if self.cur_color == piece.color:
+            return True
+        else:
+            return False
 
     def show(self):
         os.system('clear')

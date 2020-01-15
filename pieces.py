@@ -8,6 +8,7 @@ class Position:
 
 
 class Piece:
+
     cur_position = None
     type = None
     color = None
@@ -21,12 +22,9 @@ class Piece:
 
     # function to move a piece
     def move(self, tar_position):
-        if self.check(tar_position):
-            self.cur_position = tar_position
-        else:
-            pass  # raise ("Prohibited move", self.type, "cannot go to", self.cur_position)
+        self.cur_position = tar_position
 
-    def check(self, tar_position):
+    def check_moves(self,tar_position):
         if self.type == "pawn":
             self.check_pawn(tar_position)
         if self.type == "rook":
@@ -38,7 +36,19 @@ class Piece:
         if self.type == "knight":
             self.check_knight(tar_position)
 
+    def check(self, tar_position):
+        if self.is_chceck(tar_position):
+            return False
+        if not self.chceck_moves(tar_position):
+            return False
+        if not self.check_player(tar_position):
+            return False
+
+
+
     # legal moves for every piece
+
+
 
     def check_pawn(self, tar_position):
         if not tar_position[0] == self.cur_position[0] + 1:
@@ -61,4 +71,9 @@ class Piece:
         pass
 
     def check_pawn(self, tar_position):
+        pass
+
+    def is_chceck(self, tar_position):
+        pass
+    def check_player(self,tar_position):
         pass
