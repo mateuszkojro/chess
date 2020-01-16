@@ -2,8 +2,18 @@ class Position:
     cur_pos = (None, None)
     tar_pos = (None, None)
 
-    def __init__(self, x, y):
+    def __init__(self, in_cur_pos, in_tar_pos):
+        self.assign(in_cur_pos, in_tar_pos)
+
+    def set_cur(self, x, y):
         self.cur_pos = x, y
+
+    def set_tar(self, x, y):
+        self.tar_pos = x, y
+
+    def assign(self, in_cur_pos, in_tar_pos):
+        self.cur_pos = in_cur_pos
+        self.tar_pos = in_tar_pos
 
 
 class Piece:

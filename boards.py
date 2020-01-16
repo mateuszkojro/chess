@@ -44,6 +44,7 @@ class Board:
                              Piece("rook", (7, 7), "white")]
 
     def move(self, cur_pos, end_pos):
+
         moved_piece = self.cur_state[cur_pos[0]][cur_pos[1]]
         if not self.check_color(moved_piece):
             return False
@@ -52,6 +53,9 @@ class Board:
         moved_piece.move(end_pos)
         self.cur_state[cur_pos[0]][cur_pos[1]] = Piece()
         self.cur_state[end_pos[0]][end_pos[1]] = moved_piece
+
+        self.toggle_color()
+
         return True
 
     def check_color(self, piece):
@@ -73,3 +77,9 @@ class Board:
                 print(y.type.rjust(6), end="  ")
             print(" ", i)
             i = i + 1
+
+    def toggle_color(self):
+        if self.cur_color == "white":
+            self.cur_color = "black"
+        else:
+            self.cur_color = "white"
