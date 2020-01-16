@@ -7,13 +7,13 @@ class Board:
 
     def __init__(self):
 
-        for x in range(8):
+        for x in range(8):              # wypelnienine wszystkiego pionkami o hujowej zawartosci
             temp = []
             for y in range(8):
                 temp.append(Piece(in_position=(x, y)))
             self.cur_state.append(temp)
 
-        self.cur_state[0] = [Piece("rook", (0, 0), "black"), Piece("knight", (0, 1), "black"),
+        self.cur_state[0] = [Piece("rook", (0, 0), "black"), Piece("knight", (0, 1), "black"),  # ogarnicie ustawienia tych tam cno co to wiadomoco o
                              Piece("bishop", (0, 2), "black"),
                              Piece("king", (0, 3), "black"),
                              Piece("queen", (0, 4), "black"), Piece("bishop", (0, 5), "black"),
@@ -45,7 +45,7 @@ class Board:
         os.system('clear')
 
         for i in range(8):
-            print(str(i).rjust(6), end="  ")
+            print(str(i).rjust(6), end="  ") # end zeby nie bylo \n
         print()
         i = 0
         for x in self.cur_state:
