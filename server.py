@@ -12,9 +12,12 @@ class ChessServer:
 
 	ip = "10.200.0.211"
 	port = "3333"
+	flag = True
+
 
 	def __init__(self, ip_address, port):
-		
+
+		#if addres is not set acepting connections from any ip
 		self.ip = ip_address
 		self.port = int(port)
 
@@ -24,7 +27,9 @@ class ChessServer:
 
 
 
-	def run(self, debug=False):
+	def init(self, debug=False): #przygotowuje server do odbioru danych
+		
+
 		if debug: print("[*] started server at"+str(self.server.getsockname()))
 
 		self.server.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
@@ -37,9 +42,21 @@ class ChessServer:
 		if debug: print("[*] listening on "+self.ip+":"+str(self.port))
 
 
+
+		
+	def run(self):
+
+
+		while self.flag:
+			#loop constanly accepting connections sending them greatings and printing msg from them
+			c, addr = self.server.accept()  
+
+			c.send(bytes('dziala czy nie dziala','utf-8'))
+			print(f"[ {addr[0]} : {addr[1]} ] send data and recived: \"{c.recv(1024).decode()}\"")
+
+
 		#os.system("watch -n 3 'nmap localhost -p 9090 -Pn'")
-		os.system("sleep 3")
-		pass
+		
 	
 
 	def kill(self):
@@ -74,15 +91,15 @@ def main():
 	srv = ChessServer(ip_address, port)
 
 	if debug:
-		srv.run(1)	# 1 debug		0 normal
+		srv.init(1)	# 1 debug		0 normal
+		srv.run()
 	else:
-		srv.run(0)
+		srv.init(0)
+		srv.run()
 	
-	
-	srv.kill()
+	#srv.kill()
 
 
 if __name__ == "__main__":  # standalone program as file
-
 	main()
 	pass

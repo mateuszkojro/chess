@@ -41,10 +41,27 @@ class Board:
                              Piece("knight", (7, 6), "white"),
                              Piece("rook", (7, 7), "white")]
 
+    def convert_to_transfer(self): #zamieniam tablice 2d obiektow na string do wyslania gdzie :ab: a= pierwsza litera koloru b = pierwsza litera figury
+        tab = []
+        kod = ""
+        z=""
+        for x in range(8):
+            temp = []
+            for y in range(8):
+                z = str(self.cur_state[x][y].color[0]) + str(self.cur_state[x][y].type[0])
+                kod += z + ':'
+                temp.append(x)
+            tab.append(temp)
+        return kod[:-1]
+
+    def convert_from_transfer(self):
+        pass # TODO wrocic z byte codu do zwyklych obiektow
+
+
     def show(self):
         os.system('clear')
 
-        for i in range(8):
+        for i in range(8): 
             print(str(i).rjust(6), end="  ") # end zeby nie bylo \n
         print()
         i = 0

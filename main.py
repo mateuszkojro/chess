@@ -11,7 +11,7 @@ def move(cur_pos, end_pos):
     board.cur_state[end_pos[0]][end_pos[1]] = moved_piece
 
 
-pawn = pieces.Piece("pawn", (0, 0), "white"
+pawn = pieces.Piece("pawn", (0, 0), "white")
 
 board = boards.Board()
 
@@ -24,3 +24,5 @@ while (True):
 
     move((int(p_x), int(p_y)), (int(e_x), int(e_y))) #move
     board.show()
+    print()
+    print(board.convert_to_transfer())
