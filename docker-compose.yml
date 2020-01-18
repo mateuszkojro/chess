@@ -1,0 +1,7 @@
+version: '3'
+services:
+  python:
+    build: .
+
+    ports:
+      - "217.113.232.164:3333:3333"
