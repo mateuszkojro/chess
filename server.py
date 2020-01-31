@@ -51,9 +51,10 @@ class ChessServer:
 			#loop constanly accepting connections sending them greatings and printing msg from them
 			c, addr = self.server.accept()  
 
-			c.send(bytes('dziala czy nie dziala','utf-8'))
-			print(f"[ {addr[0]} : {addr[1]} ] send data and recived: \"{c.recv(1024).decode()}\"")
+			r_data = c.recv(1024).decode()
 
+			print(f"[ {addr[0]} : {addr[1]} ] send data and recived: \"{r_data}\"")
+			c.send(bytes(f'you sent: "{r_data}"','utf-8'))
 
 		#os.system("watch -n 3 'nmap localhost -p 9090 -Pn'")
 		
