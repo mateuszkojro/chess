@@ -20,7 +20,22 @@ if num > 0{
 
 type piece interface {
 	possibleMoves(now state) []state
-	getColor(now state) bool
+	getColor() bool
+}
+
+type empty struct {
+	color bool
+	empty bool
+}
+
+func (e empty) possibleMoves(now state) []state {
+	var possibleMoves []state
+	possibleMoves = append(possibleMoves, crosses(now)...)
+	possibleMoves = append(possibleMoves, lines(now)...)
+	return possibleMoves
+}
+func (e empty) getColor() bool {
+	return q.color
 }
 
 // ----
@@ -28,6 +43,7 @@ type piece interface {
 // ----
 
 type king struct {
+	empty bool
 	color bool
 }
 
@@ -59,7 +75,7 @@ func (k king) possibleMoves(now state) []state {
 	}
 	return possibleMoves
 }
-func (k king) getColor(now state) bool {
+func (k king) getColor() bool {
 	return k.color
 }
 
@@ -77,7 +93,7 @@ func (q queen) possibleMoves(now state) []state {
 	possibleMoves = append(possibleMoves, lines(now)...)
 	return possibleMoves
 }
-func (q queen) getColor(now state) bool {
+func (q queen) getColor() bool {
 	return q.color
 }
 
@@ -92,7 +108,7 @@ type rook struct {
 func (r rook) possibleMoves(now state) []state {
 	return lines(now)
 }
-func (r rook) getColor(now state) bool {
+func (r rook) getColor() bool {
 	return r.color
 }
 
@@ -107,7 +123,7 @@ type bishop struct {
 func (b bishop) possibleMoves(now state) []state {
 	return crosses(now)
 }
-func (b bishop) getColor(now state) bool {
+func (b bishop) getColor() bool {
 	return b.color
 }
 
@@ -123,7 +139,7 @@ func (k knight) possibleMoves(now state) []state {
 	var possibleMoves []state
 	return append(possibleMoves, now)
 }
-func (k knight) getColor(now state) bool {
+func (k knight) getColor() bool {
 	return k.color
 }
 
@@ -151,6 +167,6 @@ func (p pawn) possibleMoves(now state) []state {
 
 	return possibleMoves
 }
-func (p pawn) getColor(now state) bool {
+func (p pawn) getColor() bool {
 	return p.color
 }

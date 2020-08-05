@@ -4,39 +4,45 @@ package main
 // struktury do przechowywania danych
 // ----------------------------------
 
-type boardHighLevel struct {
-	position v
-	tab      map[v]byte
-}
-type v struct {
-	x int
-	y int
-}
 type figure struct {
 	symbol byte
 	name   string
 	color  bool
 }
 type state struct {
-	pos v
-	tab [64]piece
+	x, y int
+	tab  [64]piece
 }
+
+// TEST
 
 func (s state) curAddr() piece {
-	return s.addr(s.pos)
-}
-func (s state) addr(position v) piece {
-	return s.tab[position.x + (position.y * 8)]
+	return s.addr(s.x, s.y)
 }
 
-func (s state) addrd(x int, y int) piece {
-	return s.tab[(y * 8) + x]
+// TEST
+/*
+func (s state) addr(position v) piece {
+	return s.tab[position.x+(position.y*8)]
 }
-func (s state) set (p piece , x int , y int) piece {
-	s.tab[(y * 8) + x] = p
-	s.pos = v{x,y}
+*/
+// TEST
+func (s state) addr(x int, y int) piece {
+	return s.tab[(y*8)+x]
+}
+
+// TEST
+func (s state) set(p piece, x int, y int) state {
+	s.tab[(y*8)+x] = p
+	s.x, s.y = x, y
 	return s
 }
+
+// TEST
+func (s state) move(p piece, x int, y int) state {
+	return (s.set(empty{true, true}, s.x, s.y).set(p, x, y))
+}
+
 // ===
 
 // ###########
@@ -48,38 +54,33 @@ func (s state) set (p piece , x int , y int) piece {
 // ---------------
 
 func isBorderUp(now state) bool {
-	if now.pos.y < 7 {
+	if now.y < 7 {
 		return false
 	}
 	return true
 }
-func stepUp(now state) state {
-	UpState := now
-	UpState.tab[addr(v{now.pos.x, now.pos.y + 1})] = now.tab[addr(v{now.pos.x, now.pos.y})]
-	UpState.pos = v{now.pos.x, now.pos.y + 1}
-	return UpState
+
+// TEST
+func isUpEmpty(now state) bool {
+	return stepUp(now).curAddr().isEmpty()
 }
 
-// FIXME wyjebie blad jezeli nademna jest puste pole
-
-func isUpMyPiece(now state) bool {
-	x := stepUp(now)
-	return now.tab[addr(now.pos)].getColor(now) == x.tab[addr(x.pos)].getColor(x)
-}
-
-// FIXME wyjebie blad jezeli nademna jest puste pole
-// FIXME zrobic tak jak w isUpMyPiece
-
+// TEST
 func isUpEnemyPiece(now state) bool {
-	return now.tab[addr(now.pos)].getColor(now) != now.tab[addrd(now.pos.x, now.pos.y+1)].getColor(now)
+	return now.curAddr().getColor() != stepUp(now).curAddr().getColor()
 }
 
+// TEST
 func checkStepUp(now state) bool {
-	if isBorderUp(now){
+	if isBorderUp(now) {
 		return false
 	} else if isUpEmpty(now) {
 		return false
 	}
+}
+
+func stepUp(now state) state {
+	return now.move(now.curAddr(), now.x, now.y+1)
 }
 
 func up(now state) []state {
@@ -103,33 +104,33 @@ func up(now state) []state {
 // -----------------
 
 func isBorderDown(now state) bool {
-	if now.pos.y > 0 {
+	if now.y > 0 {
 		return false
 	}
 	return true
 }
 
-func isDownMyPiece(now state) bool {
-	return now.tab[addr(now.pos)].getColor(now) == now.tab[addrd(now.pos.x, now.pos.y-1)].getColor(now)
+// TEST
+func isDownEmpty(now state) bool {
+	return stepDown(now).curAddr().isEmpty()
 }
 
+// TEST
 func isDownEnemyPiece(now state) bool {
-	return now.tab[addr(now.pos)].getColor(now) != now.tab[addrd(now.pos.x, now.pos.y-1)].getColor(now)
+	return now.curAddr().getColor() != stepDown(now).curAddr().getColor()
 }
 
-// TODO: sprawdzam tylko czy nie jestem na skraju
+// TEST
 func checkStepDown(now state) bool {
-	if isDownEmpty(now) {
+	if isBorderDown(now) {
+		return false
+	} else if isDownEmpty(now) {
 		return false
 	}
-	return isBorderDown(now) || isDownMyPiece(now)
 }
 
 func stepDown(now state) state {
-	UpState := now
-	UpState.tab[addr(v{now.pos.x, now.pos.y - 1})] = now.tab[addr(v{now.pos.x, now.pos.y})]
-	UpState.pos = v{now.pos.x, now.pos.y - 1}
-	return UpState
+	return now.move(now.curAddr(), now.x, now.y-1)
 }
 
 func down(now state) []state {
@@ -152,35 +153,36 @@ func down(now state) []state {
 //  left section
 // -----------------
 func isBorderLeft(now state) bool {
-	if now.pos.x > 0 {
+	if now.x > 0 {
 		return false
 	}
 	return true
 }
-func isLeftMyPiece(now state) bool {
-	return now.tab[addr(now.pos)].getColor(now) == now.tab[addrd(now.pos.x-1, now.pos.y)].getColor(now)
+
+// TEST
+func isLeftEmpty(now state) bool {
+	return stepLeft(now).curAddr().isEmpty()
 }
 
+// TEST
 func isLeftEnemyPiece(now state) bool {
-	return now.tab[addr(now.pos)].getColor(now) != now.tab[addrd(now.pos.x-1, now.pos.y)].getColor(now)
+	return now.curAddr().getColor() != stepLeft(now).curAddr().getColor()
 }
 
-// TODO: sprawdzam tylko czy nie jestem na skraju
+// TEST
 func checkStepLeft(now state) bool {
-	if isLeftEmpty(now) {
+	if isBorderLeft(now) {
+		return false
+	} else if isLeftEmpty(now) {
 		return false
 	}
-	return isBorderLeft(now) || isLeftMyPiece(now)
 }
 
 func stepLeft(now state) state {
-	UpState := now
-	UpState.tab[addr(v{now.pos.x - 1, now.pos.y})] = now.tab[addr(v{now.pos.x, now.pos.y})]
-	UpState.pos = v{now.pos.x - 1, now.pos.y}
-	return UpState
+	return now.move(now.curAddr(), now.x-1, now.y)
 }
 
-func left(now state) []state {
+func Left(now state) []state {
 	var possibleMoves []state
 	for !checkStepLeft(now) {
 		if isLeftEnemyPiece(now) {
@@ -199,35 +201,35 @@ func left(now state) []state {
 // ------------------
 //  right section
 // ------------------
-
-func isRightMyPiece(now state) bool {
-	return now.tab[addr(now.pos)].getColor(now) == now.tab[addrd(now.pos.x+1, now.pos.y)].getColor(now)
-}
-
-func isRightEnemyPiece(now state) bool {
-	return now.tab[addr(now.pos)].getColor(now) != now.tab[addrd(now.pos.x+1, now.pos.y)].getColor(now)
-}
-
-// TODO: sprawdzam tylko czy nie jestem na skraju
-func checkStepRight(now state) bool {
-	if isRightEmpty(now) {
-		return false
-	}
-	return isBorderRight(now) || isRightMyPiece(now)
-}
-
-func stepRight(now state) state {
-	UpState := now
-	UpState.tab[addr(v{now.pos.x + 1, now.pos.y})] = now.tab[addr(v{now.pos.x, now.pos.y})]
-	UpState.pos = v{now.pos.x + 1, now.pos.y}
-	return UpState
-}
-
+// -----------------
 func isBorderRight(now state) bool {
-	if now.pos.x < 7 {
+	if now.x < 7 {
 		return false
 	}
 	return true
+}
+
+// TEST
+func isRightEmpty(now state) bool {
+	return stepRight(now).curAddr().isEmpty()
+}
+
+// TEST
+func isRightEnemyPiece(now state) bool {
+	return now.curAddr().getColor() != stepRight(now).curAddr().getColor()
+}
+
+// TEST
+func checkStepRight(now state) bool {
+	if isBorderRight(now) {
+		return false
+	} else if isRightEmpty(now) {
+		return false
+	}
+}
+
+func stepRight(now state) state {
+	return now.move(now.curAddr(), now.x+1, now.y)
 }
 
 func right(now state) []state {
@@ -272,44 +274,45 @@ func lines(now state) []state {
 // ---------------------
 
 func isBorderLeftUp(now state) bool {
-	return isBorderLeft(now) || isBorderUp(now)
-}
-func stepLeftUp(now state) state {
-	LeftUpState := now
-	LeftUpState.tab[addr(v{now.pos.x - 1, now.pos.y + 1})] = now.tab[addr(v{now.pos.x, now.pos.y})]
-	LeftUpState.pos = v{now.pos.x - 1, now.pos.y + 1}
-	return LeftUpState
-}
-
-// FIXME wyjebie blad jezeli nademna jest puste pole
-// FIXME zrobic tak jak w isUpMyPiece
-
-func isLeftUpMyPiece(now state) bool {
-	return now.tab[addr(now.pos)].getColor(now) == now.tab[addrd(now.pos.x-1, now.pos.y+1)].getColor(now)
-}
-
-// FIXME wyjebie blad jezeli nademna jest puste pole
-// FIXME zrobic tak jak w isUpMyPiece
-
-func isLeftUpEnemyPiece(now state) bool {
-	return now.tab[addr(now.pos)].getColor(now) != now.tab[addrd(now.pos.x-1, now.pos.y+1)].getColor(now)
-}
-
-func checkStepLeftUp(now state) bool {
-	if isLeftUpEmpty(now) {
+	if now.y < 7 || now.x > 0 {
 		return false
 	}
-	return isBorderLeftUp(now) || isLeftUpMyPiece(now)
+	return true
 }
 
-func leftUp(now state) []state {
+// TEST
+func isLeftUpEmpty(now state) bool {
+	return stepLeftUp(now).curAddr().isEmpty()
+}
+
+// TEST
+func isLeftUpEnemyPiece(now state) bool {
+	return now.curAddr().getColor() != stepLeftUp(now).curAddr().getColor()
+}
+
+// TEST
+func checkStepLeftUp(now state) bool {
+	if isBorderLeftUp(now) {
+		return false
+	} else if isLeftUpEmpty(now) {
+		return false
+	}
+}
+
+func stepLeftUp(now state) state {
+	return now.move(now.curAddr(), now.x-1, now.y+1)
+}
+
+func LeftUp(now state) []state {
 	var possibleMoves []state
 	for !checkStepLeftUp(now) {
-		now = stepLeftUp(now)
-		possibleMoves = append(possibleMoves, now)
 		if isLeftUpEnemyPiece(now) {
+			possibleMoves = append(possibleMoves, stepLeftUp(now))
 			break
 		}
+		now = stepLeftUp(now)
+		possibleMoves = append(possibleMoves, now)
+
 	}
 	return possibleMoves
 }
@@ -321,33 +324,35 @@ func leftUp(now state) []state {
 // ----------------------
 
 func isBorderRightUp(now state) bool {
-	return isBorderRight(now) || isBorderUp(now)
-}
-func stepRightUp(now state) state {
-	RightUpState := now
-	RightUpState.tab[addr(v{now.pos.x + 1, now.pos.y + 1})] = now.tab[addr(v{now.pos.x, now.pos.y})]
-	RightUpState.pos = v{now.pos.x + 1, now.pos.y + 1}
-	return RightUpState
-}
-func isRightUpEnemyPiece(now state) bool {
-	return now.tab[addr(now.pos)].getColor(now) == now.tab[addrd(now.pos.x+1, now.pos.y+1)].getColor(now)
-}
-
-// FIXME wyjebie blad jezeli nademna jest puste pole
-// FIXME zrobic tak jak w isUpMyPiece
-
-func isRightUpMyPiece(now state) bool {
-	return now.tab[addr(now.pos)].getColor(now) != now.tab[addrd(now.pos.x+1, now.pos.y+1)].getColor(now)
-}
-
-func checkStepRightUp(now state) bool {}
-	if (isRightUpEmpty(now)){
+	if now.y < 7 || now.x < 7 {
 		return false
 	}
-	return isBorderRightUp(now) || isRightUpMyPiece(now)
+	return true
 }
 
-// FIXME: to chyba mozna jakos uogulnic dla wszytskich funkcji ale jescze nie wiem jak
+// TEST
+func isRightUpEmpty(now state) bool {
+	return stepRightUp(now).curAddr().isEmpty()
+}
+
+// TEST
+func isRightUpEnemyPiece(now state) bool {
+	return now.curAddr().getColor() != stepRightUp(now).curAddr().getColor()
+}
+
+// TEST
+func checkStepRightUp(now state) bool {
+	if isBorderRightUp(now) {
+		return false
+	} else if isRightUpEmpty(now) {
+		return false
+	}
+}
+
+func stepRightUp(now state) state {
+	return now.move(now.curAddr(), now.x+1, now.y+1)
+}
+
 func rightUp(now state) []state {
 	var possibleMoves []state
 	for !checkStepRightUp(now) {
@@ -363,43 +368,40 @@ func rightUp(now state) []state {
 }
 
 // ---
-ccccccccc
 // ---------------------
 //  left Down section
 // ---------------------
-
 func isBorderLeftDown(now state) bool {
-	return isBorderLeft(now) || isBorderDown(now)
-}
-func stepLeftDown(now state) state {
-	LeftDownState := now
-	LeftDownState.tab[addr(v{now.pos.x - 1, now.pos.y - 1})] = now.tab[addr(v{now.pos.x, now.pos.y})]
-	LeftDownState.pos = v{now.pos.x - 1, now.pos.y - 1}
-	return LeftDownState
-}
-
-// FIXME wyjebie blad jezeli nademna jest puste pole
-// FIXME zrobic tak jak w isUpMyPiece
-
-func isLeftDownMyPiece(now state) bool {
-	return now.tab[addr(now.pos)].getColor(now) == now.tab[addrd(now.pos.x-1, now.pos.y-1)].getColor(now)
-}
-
-// FIXME wyjebie blad jezeli nademna jest puste pole
-// FIXME zrobic tak jak w isUpMyPiece
-
-func isLeftDownEnemyPiece(now state) bool {
-	return now.tab[addr(now.pos)].getColor(now) != now.tab[addrd(now.pos.x-1, now.pos.y-1)].getColor(now)
-}
-
-func checkStepLeftDown(now state) bool {
-	if isLeftDownEmpty(now){
+	if now.y > 0 || now.x > 0 {
 		return false
 	}
-	return isBorderLeftDown(now) || isLeftDownMyPiece(now)
+	return true
 }
 
-func leftDown(now state) []state {
+// TEST
+func isLeftDownEmpty(now state) bool {
+	return stepLeftDown(now).curAddr().isEmpty()
+}
+
+// TEST
+func isLeftDownEnemyPiece(now state) bool {
+	return now.curAddr().getColor() != stepLeftDown(now).curAddr().getColor()
+}
+
+// TEST
+func checkStepLeftDown(now state) bool {
+	if isBorderLeftDown(now) {
+		return false
+	} else if isLeftDownEmpty(now) {
+		return false
+	}
+}
+
+func stepLeftDown(now state) state {
+	return now.move(now.curAddr(), now.x-1, now.y-1)
+}
+
+func LeftDown(now state) []state {
 	var possibleMoves []state
 	for !checkStepLeftDown(now) {
 		if isLeftDownEnemyPiece(now) {
@@ -420,31 +422,33 @@ func leftDown(now state) []state {
 // ------------------------
 
 func isBorderRightDown(now state) bool {
-	return isBorderRight(now) || isBorderDown(now)
-}
-func stepRightDown(now state) state {
-	RightDownState := now
-	RightDownState.tab[addr(v{now.pos.x + 1, now.pos.y - 1})] = now.tab[addr(v{now.pos.x, now.pos.y})]
-	RightDownState.pos = v{now.pos.x + 1, now.pos.y - 1}
-	return RightDownState
+	if now.y > 0 || now.x < 7 {
+		return false
+	}
+	return true
 }
 
-// FIXME wyjebie blad jezeli nademna jest puste pole
-// FIXME zrobic tak jak w isUpMyPiece
-
-func isRightDownMyPiece(now state) bool {
-	return now.tab[addr(now.pos)].getColor(now) == now.tab[addrd(now.pos.x, now.pos.y-1)].getColor(now)
+// TEST
+func isRightDownEmpty(now state) bool {
+	return stepRightDown(now).curAddr().isEmpty()
 }
 
-// FIXME wyjebie blad jezeli nademna jest puste pole
-// FIXME zrobic tak jak w isUpMyPiece
-
+// TEST
 func isRightDownEnemyPiece(now state) bool {
-	return now.tab[addr(now.pos)].getColor(now) != now.tab[addrd(now.pos.x, now.pos.y-1)].getColor(now)
+	return now.curAddr().getColor() != stepRightDown(now).curAddr().getColor()
 }
 
+// TEST
 func checkStepRightDown(now state) bool {
-	return isBorderRightDown(now) || isRightDownMyPiece(now)
+	if isBorderRightDown(now) {
+		return false
+	} else if isRightDownEmpty(now) {
+		return false
+	}
+}
+
+func stepRightDown(now state) state {
+	return now.move(now.curAddr(), now.x+1, now.y-1)
 }
 
 func rightDown(now state) []state {
