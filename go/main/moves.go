@@ -71,12 +71,14 @@ func isUpEnemyPiece(now state) bool {
 }
 
 // TEST
+// nie jestem tego pewnien bo nie pamietam jak wyglda test podczas ruchcu wartosci moga byc odwrocone
 func checkStepUp(now state) bool {
 	if isBorderUp(now) {
 		return false
 	} else if isUpEmpty(now) {
 		return false
 	}
+	return true
 }
 
 func stepUp(now state) state {
