@@ -40,6 +40,7 @@ func (s state) set(p piece, x int, y int) state {
 
 // TEST
 func (s state) move(p piece, x int, y int) state {
+	x empty
 	return (s.set(empty{true, true}, s.x, s.y).set(p, x, y))
 }
 
@@ -129,6 +130,7 @@ func checkStepDown(now state) bool {
 	} else if isDownEmpty(now) {
 		return false
 	}
+	return true
 }
 
 func stepDown(now state) state {
@@ -178,13 +180,14 @@ func checkStepLeft(now state) bool {
 	} else if isLeftEmpty(now) {
 		return false
 	}
+	return true
 }
 
 func stepLeft(now state) state {
 	return now.move(now.curAddr(), now.x-1, now.y)
 }
 
-func Left(now state) []state {
+func left(now state) []state {
 	var possibleMoves []state
 	for !checkStepLeft(now) {
 		if isLeftEnemyPiece(now) {
@@ -228,6 +231,7 @@ func checkStepRight(now state) bool {
 	} else if isRightEmpty(now) {
 		return false
 	}
+	return true
 }
 
 func stepRight(now state) state {
@@ -299,13 +303,14 @@ func checkStepLeftUp(now state) bool {
 	} else if isLeftUpEmpty(now) {
 		return false
 	}
+	return true
 }
 
 func stepLeftUp(now state) state {
 	return now.move(now.curAddr(), now.x-1, now.y+1)
 }
 
-func LeftUp(now state) []state {
+func leftUp(now state) []state {
 	var possibleMoves []state
 	for !checkStepLeftUp(now) {
 		if isLeftUpEnemyPiece(now) {
@@ -349,6 +354,7 @@ func checkStepRightUp(now state) bool {
 	} else if isRightUpEmpty(now) {
 		return false
 	}
+	return true
 }
 
 func stepRightUp(now state) state {
@@ -397,13 +403,14 @@ func checkStepLeftDown(now state) bool {
 	} else if isLeftDownEmpty(now) {
 		return false
 	}
+	return true
 }
 
 func stepLeftDown(now state) state {
 	return now.move(now.curAddr(), now.x-1, now.y-1)
 }
 
-func LeftDown(now state) []state {
+func leftDown(now state) []state {
 	var possibleMoves []state
 	for !checkStepLeftDown(now) {
 		if isLeftDownEnemyPiece(now) {
@@ -447,6 +454,7 @@ func checkStepRightDown(now state) bool {
 	} else if isRightDownEmpty(now) {
 		return false
 	}
+	return true
 }
 
 func stepRightDown(now state) state {

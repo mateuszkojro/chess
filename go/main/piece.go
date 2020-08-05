@@ -21,6 +21,7 @@ if num > 0{
 type piece interface {
 	possibleMoves(now state) []state
 	getColor() bool
+	isUpEmpty()
 }
 
 type empty struct {
@@ -35,7 +36,11 @@ func (e empty) possibleMoves(now state) []state {
 	return possibleMoves
 }
 func (e empty) getColor() bool {
-	return q.color
+	return e.color
+}
+
+func (e empty) isEmpty() bool {
+	return e.empty
 }
 
 // ----
