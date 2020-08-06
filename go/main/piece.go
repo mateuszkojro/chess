@@ -21,26 +21,27 @@ if num > 0{
 type piece interface {
 	possibleMoves(now state) []state
 	getColor() bool
-	isUpEmpty()
+	isEmpty() bool
+	whoami() string
 }
 
 type empty struct {
 	color bool
-	empty bool
 }
 
 func (e empty) possibleMoves(now state) []state {
-	var possibleMoves []state
-	possibleMoves = append(possibleMoves, crosses(now)...)
-	possibleMoves = append(possibleMoves, lines(now)...)
-	return possibleMoves
+	return nil
 }
 func (e empty) getColor() bool {
 	return e.color
 }
 
 func (e empty) isEmpty() bool {
-	return e.empty
+	return true
+}
+
+func (e empty) whoami() string {
+	return ("   .  ")
 }
 
 // ----
@@ -48,7 +49,6 @@ func (e empty) isEmpty() bool {
 // ----
 
 type king struct {
-	empty bool
 	color bool
 }
 
@@ -84,6 +84,14 @@ func (k king) getColor() bool {
 	return k.color
 }
 
+func (k king) isEmpty() bool {
+	return false
+}
+
+func (k king) whoami() string {
+	return (" king ")
+}
+
 // -----
 // queen
 // -----
@@ -102,6 +110,14 @@ func (q queen) getColor() bool {
 	return q.color
 }
 
+func (q queen) isEmpty() bool {
+	return false
+}
+
+func (q queen) whoami() string {
+	return (" queen")
+}
+
 // ----
 // rook
 // ----
@@ -115,6 +131,13 @@ func (r rook) possibleMoves(now state) []state {
 }
 func (r rook) getColor() bool {
 	return r.color
+}
+func (r rook) isEmpty() bool {
+	return false
+}
+
+func (r rook) whoami() string {
+	return (" rook ")
 }
 
 // ------
@@ -131,6 +154,13 @@ func (b bishop) possibleMoves(now state) []state {
 func (b bishop) getColor() bool {
 	return b.color
 }
+func (b bishop) isEmpty() bool {
+	return false
+}
+
+func (b bishop) whoami() string {
+	return ("bishop")
+}
 
 // ------
 // knight
@@ -146,6 +176,13 @@ func (k knight) possibleMoves(now state) []state {
 }
 func (k knight) getColor() bool {
 	return k.color
+}
+func (k knight) isEmpty() bool {
+	return false
+}
+
+func (k knight) whoami() string {
+	return ("knight")
 }
 
 // ----
@@ -174,4 +211,11 @@ func (p pawn) possibleMoves(now state) []state {
 }
 func (p pawn) getColor() bool {
 	return p.color
+}
+func (p pawn) isEmpty() bool {
+	return false
+}
+
+func (p pawn) whoami() string {
+	return (" pawn ")
 }

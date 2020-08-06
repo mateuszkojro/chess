@@ -1,31 +1,21 @@
 package main
 
+import "fmt"
+
 // ----------------------------------
 // struktury do przechowywania danych
 // ----------------------------------
 
-type figure struct {
-	symbol byte
-	name   string
-	color  bool
-}
 type state struct {
 	x, y int
 	tab  [64]piece
 }
 
 // TEST
-
 func (s state) curAddr() piece {
 	return s.addr(s.x, s.y)
 }
 
-// TEST
-/*
-func (s state) addr(position v) piece {
-	return s.tab[position.x+(position.y*8)]
-}
-*/
 // TEST
 func (s state) addr(x int, y int) piece {
 	return s.tab[(y*8)+x]
@@ -38,10 +28,36 @@ func (s state) set(p piece, x int, y int) state {
 	return s
 }
 
-// TEST
+// TODO: mozna lepiej bez figury do wstawienia
 func (s state) move(p piece, x int, y int) state {
-	x empty
-	return (s.set(empty{true, true}, s.x, s.y).set(p, x, y))
+	//fmt.Println("i moved", s.curAddr().whoami(), "from: ", s.x, s.y, " to: ", x, y)
+	t := s.set(empty{true}, s.x, s.y)
+	return t.set(p, x, y)
+}
+
+func (s state) emptyBoard() state {
+	e := empty{true}
+	for i := 0; i < len(s.tab); i++ {
+		s.tab[i] = e
+	}
+	return s
+}
+
+func (s state) show() {
+	fmt.Println("x: ", s.x, "y: ", s.y)
+	fmt.Print(" ")
+	for i := 0; i < 8; i++ {
+		fmt.Print("   ", i, "   ")
+	}
+	fmt.Println()
+	for y := 0; y < 8; y++ {
+		fmt.Print(y, " ")
+		for x := 0; x < 8; x++ {
+			fmt.Print(s.addr(x, y).whoami())
+			fmt.Print(" ")
+		}
+		fmt.Println()
+	}
 }
 
 // ===
@@ -72,14 +88,13 @@ func isUpEnemyPiece(now state) bool {
 }
 
 // TEST
-// nie jestem tego pewnien bo nie pamietam jak wyglda test podczas ruchcu wartosci moga byc odwrocone
 func checkStepUp(now state) bool {
+	//fmt.Println("is border up: ", isBorderUp(now))
 	if isBorderUp(now) {
-		return false
-	} else if isUpEmpty(now) {
-		return false
+		return true
 	}
-	return true
+	//fmt.Println("is up empty: ", isUpEmpty(now))
+	return isUpEmpty(now)
 }
 
 func stepUp(now state) state {
@@ -87,8 +102,11 @@ func stepUp(now state) state {
 }
 
 func up(now state) []state {
+	//possibleMoves := make([]state, 0, allocSize)
 	var possibleMoves []state
-	for !checkStepUp(now) {
+	//fmt.Println("jestem poza petla", checkStepUp(now))
+	for checkStepUp(now) == false {
+		//fmt.Println("jestem w petli")
 		if isUpEnemyPiece(now) {
 			possibleMoves = append(possibleMoves, stepUp(now))
 			break
@@ -107,7 +125,7 @@ func up(now state) []state {
 // -----------------
 
 func isBorderDown(now state) bool {
-	if now.y > 0 {
+	if now.y < 7 {
 		return false
 	}
 	return true
@@ -125,12 +143,12 @@ func isDownEnemyPiece(now state) bool {
 
 // TEST
 func checkStepDown(now state) bool {
+	//fmt.Println("is border Down: ", isBorderDown(now))
 	if isBorderDown(now) {
-		return false
-	} else if isDownEmpty(now) {
-		return false
+		return true
 	}
-	return true
+	//fmt.Println("is Down empty: ", isDownEmpty(now))
+	return isDownEmpty(now)
 }
 
 func stepDown(now state) state {
@@ -138,8 +156,11 @@ func stepDown(now state) state {
 }
 
 func down(now state) []state {
+	//possibleMoves := make([]state, 0, allocSize)
 	var possibleMoves []state
-	for !checkStepDown(now) {
+	//fmt.Println("jestem poza petla", checkStepDown(now))
+	for checkStepDown(now) == false {
+		//fmt.Println("jestem w petli")
 		if isDownEnemyPiece(now) {
 			possibleMoves = append(possibleMoves, stepDown(now))
 			break
