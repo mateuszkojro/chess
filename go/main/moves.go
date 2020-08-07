@@ -62,6 +62,56 @@ func (s state) show() {
 
 // ===
 
+// ----------------------------
+// dodatkowe funkcje pomocnicze
+// ----------------------------
+
+func createEmptyBoard() state {
+	return state{}
+}
+
+func createSimpleBoard() state {
+	var board = state{0, 0, [64]piece{}}
+	var p pawn
+	for i := 0; i < 8; i++ {
+		board = board.set(p, i, 1)
+		board = board.set(p, i, 6)
+	}
+	var r rook
+	var k king
+	var kn knight
+	var bi bishop
+	var q queen
+
+	board = board.set(r, 0, 0)
+	board = board.set(r, 7, 0)
+	board = board.set(r, 0, 7)
+	board = board.set(r, 7, 7)
+	board = board.set(kn, 1, 0)
+	board = board.set(kn, 6, 0)
+	board = board.set(kn, 1, 7)
+	board = board.set(kn, 6, 7)
+	board = board.set(bi, 2, 0)
+	board = board.set(bi, 5, 0)
+	board = board.set(bi, 2, 7)
+	board = board.set(bi, 5, 7)
+	board = board.set(q, 3, 0)
+	board = board.set(q, 3, 7)
+	board = board.set(k, 4, 0)
+	board = board.set(k, 4, 7)
+
+	var e empty
+	for i := 0; i < 8; i++ {
+		board = board.set(e, i, 2)
+		board = board.set(e, i, 3)
+		board = board.set(e, i, 4)
+		board = board.set(e, i, 5)
+	}
+	return board
+}
+
+// ---
+
 // ###########
 // #  LINES  #
 // ###########
@@ -379,12 +429,12 @@ func isRightUpEnemyPiece(now state) bool {
 
 // TEST
 func checkStepRightUp(now state) bool {
+	//fmt.Println("is border RightUp: ", isBorderRightUp(now))
 	if isBorderRightUp(now) {
-		return false
-	} else if isRightUpEmpty(now) {
-		return false
+		return true
 	}
-	return true
+	//fmt.Println("is RightUp empty: ", isRightUpEmpty(now))
+	return isRightUpEmpty(now)
 }
 
 func stepRightUp(now state) state {
@@ -392,8 +442,11 @@ func stepRightUp(now state) state {
 }
 
 func rightUp(now state) []state {
-	var possibleMoves []state
-	for !checkStepRightUp(now) {
+	possibleMoves := make([]state, 0, 8)
+	//var possibleMoves []state
+	//fmt.Println("jestem poza petla", checkStepRightUp(now))
+	for checkStepRightUp(now) == false {
+		//fmt.Println("jestem w petli")
 		if isRightUpEnemyPiece(now) {
 			possibleMoves = append(possibleMoves, stepRightUp(now))
 			break
@@ -428,12 +481,12 @@ func isLeftDownEnemyPiece(now state) bool {
 
 // TEST
 func checkStepLeftDown(now state) bool {
+	//fmt.Println("is border LeftDown: ", isBorderLeftDown(now))
 	if isBorderLeftDown(now) {
-		return false
-	} else if isLeftDownEmpty(now) {
-		return false
+		return true
 	}
-	return true
+	//fmt.Println("is LeftDown empty: ", isLeftDownEmpty(now))
+	return isLeftDownEmpty(now)
 }
 
 func stepLeftDown(now state) state {
@@ -441,8 +494,11 @@ func stepLeftDown(now state) state {
 }
 
 func leftDown(now state) []state {
-	var possibleMoves []state
-	for !checkStepLeftDown(now) {
+	possibleMoves := make([]state, 0, 8)
+	//var possibleMoves []state
+	//fmt.Println("jestem poza petla", checkStepLeftDown(now))
+	for checkStepLeftDown(now) == false {
+		//fmt.Println("jestem w petli")
 		if isLeftDownEnemyPiece(now) {
 			possibleMoves = append(possibleMoves, stepLeftDown(now))
 			break
@@ -479,12 +535,12 @@ func isRightDownEnemyPiece(now state) bool {
 
 // TEST
 func checkStepRightDown(now state) bool {
+	//fmt.Println("is border RightDown: ", isBorderRightDown(now))
 	if isBorderRightDown(now) {
-		return false
-	} else if isRightDownEmpty(now) {
-		return false
+		return true
 	}
-	return true
+	//fmt.Println("is RightDown empty: ", isRightDownEmpty(now))
+	return isRightDownEmpty(now)
 }
 
 func stepRightDown(now state) state {
@@ -492,8 +548,11 @@ func stepRightDown(now state) state {
 }
 
 func rightDown(now state) []state {
-	var possibleMoves []state
-	for !checkStepRightDown(now) {
+	possibleMoves := make([]state, 0, 8)
+	//var possibleMoves []state
+	//fmt.Println("jestem poza petla", checkStepRightDown(now))
+	for checkStepRightDown(now) == false {
+		//fmt.Println("jestem w petli")
 		if isRightDownEnemyPiece(now) {
 			possibleMoves = append(possibleMoves, stepRightDown(now))
 			break

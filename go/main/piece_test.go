@@ -5,7 +5,7 @@ import (
 )
 
 func BenchmarkKing(b *testing.B) {
-	var test = state{4, 4, [64]piece{}}
+	var test = createSimpleBoard()
 	var a king
 	test.set(a, 4, 4)
 	var r []state
@@ -16,7 +16,7 @@ func BenchmarkKing(b *testing.B) {
 }
 
 func BenchmarkQueen(b *testing.B) {
-	var test = state{4, 4, [64]piece{}}
+	var test = createSimpleBoard()
 	var a queen
 	test.set(a, 4, 4)
 	var r []state
@@ -27,7 +27,7 @@ func BenchmarkQueen(b *testing.B) {
 }
 
 func BenchmarkRook(b *testing.B) {
-	var test = state{4, 4, [64]piece{}}
+	var test = createSimpleBoard()
 	var a rook
 	test.set(a, 4, 4)
 	var r []state
@@ -38,7 +38,7 @@ func BenchmarkRook(b *testing.B) {
 }
 
 func BenchmarkBishop(b *testing.B) {
-	var test = state{4, 4, [64]piece{}}
+	var test = createSimpleBoard()
 	var a bishop
 	test.set(a, 4, 4)
 	var r []state
@@ -49,7 +49,7 @@ func BenchmarkBishop(b *testing.B) {
 }
 
 func BenchmarkKnight(b *testing.B) {
-	var test = state{4, 4, [64]piece{}}
+	var test = createSimpleBoard()
 	var a knight
 	test.set(a, 4, 4)
 	var r []state
@@ -60,7 +60,7 @@ func BenchmarkKnight(b *testing.B) {
 }
 
 func BenchmarkPawn(b *testing.B) {
-	var test = state{4, 4, [64]piece{}}
+	var test = createSimpleBoard()
 	var a pawn
 	test.set(a, 4, 4)
 	var r []state
@@ -72,42 +72,7 @@ func BenchmarkPawn(b *testing.B) {
 
 // HACK its far from correct
 func Benchmark1Move(b *testing.B) {
-	var board = state{0, 0, [64]piece{}}
-	var p pawn
-	for i := 0; i < 8; i++ {
-		board = board.set(p, i, 1)
-		board = board.set(p, i, 6)
-	}
-	var r rook
-	var k king
-	var kn knight
-	var bi bishop
-	var q queen
-
-	board = board.set(r, 0, 0)
-	board = board.set(r, 7, 0)
-	board = board.set(r, 0, 7)
-	board = board.set(r, 7, 7)
-	board = board.set(kn, 1, 0)
-	board = board.set(kn, 6, 0)
-	board = board.set(kn, 1, 7)
-	board = board.set(kn, 6, 7)
-	board = board.set(bi, 2, 0)
-	board = board.set(bi, 5, 0)
-	board = board.set(bi, 2, 7)
-	board = board.set(bi, 5, 7)
-	board = board.set(q, 3, 0)
-	board = board.set(q, 3, 7)
-	board = board.set(k, 4, 0)
-	board = board.set(k, 4, 7)
-
-	var e empty
-	for i := 0; i < 8; i++ {
-		board = board.set(e, i, 2)
-		board = board.set(e, i, 3)
-		board = board.set(e, i, 4)
-		board = board.set(e, i, 5)
-	}
+	var board = createSimpleBoard()
 
 	var result []state
 	for n := 0; n < b.N; n++ {
