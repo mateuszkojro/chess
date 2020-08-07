@@ -155,6 +155,7 @@ def evaluate(board, depth):
 - punkty za past pionki
 - punkty za kazde kontrolowane pole (pole na ktorym moge stanac)
 - punkty za ograniczenie kontrolowanych pol przeciwnika
+- punkty za strukture pionkow
 
 ```python
 def analyze_board(board):

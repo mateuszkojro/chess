@@ -27,7 +27,7 @@ func TestMove(t *testing.T) {
 // ###########
 
 // ------------------
-// bench  section
+//   bench  section
 // ------------------
 var result1 state
 
