@@ -22,6 +22,29 @@ func TestMove(t *testing.T) {
 
 }
 
+func TestCheckStepUp(t *testing.T) {
+	var board = createSimpleBoard()
+	board = board.setCur(4, 1)
+	if checkStepUp(board) != false {
+		t.Errorf("pionek nie moze sie ruszyc na poczatku ")
+	}
+	board = board.setCur(4, 0)
+	if checkStepUp(board) != true {
+		t.Errorf("krol na poczatku moze sie ruszyc do gory")
+	}
+}
+func TestCheckStep(t *testing.T) {
+	var board = createSimpleBoard()
+	board = board.setCur(4, 0)
+	if len(board.curAddr().possibleMoves(board)) != 0 {
+		t.Errorf("Krol na poczatku meczu ma ruchy ")
+	}
+	board = board.setCur(4, 1)
+	if len(board.curAddr().possibleMoves(board)) != 1 {
+		t.Errorf("Pionek na poczatku ma wiecej niz jeden ruch %v ", len(board.curAddr().possibleMoves(board)))
+	}
+}
+
 // ###########
 // #  LINES  #
 // ###########
@@ -378,7 +401,6 @@ func Test0Col7RowIsBorderLeftUp(t *testing.T) {
 	}
 }
 
-
 // TEST
 func Test1Col7RowIsBorderLeftUp(t *testing.T) {
 	//tworze state na granicy
@@ -394,7 +416,6 @@ func Test0Col6RowIsBorderLeftUp(t *testing.T) {
 		t.Errorf("Jestem na 0 kolumnie a `isBorderLeftUp` zwraca: %t", isBorderLeftUp(test))
 	}
 }
-
 
 func Test1Col6RowIsBorderLeftUp(t *testing.T) {
 	//tworze state na granicy

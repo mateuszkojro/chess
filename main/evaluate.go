@@ -1,5 +1,7 @@
 package main
 
+import "fmt"
+
 func evaluate(now state, depth int) int {
 	if depth > 0 {
 		depth--
@@ -23,5 +25,6 @@ func analyzeBoard(now state) int {
 			eval++
 		}
 	}
+	fmt.Println("i analyzed xdd", now.curAddr().whoami(), now.x, now.y)
 	return int(eval)
 }

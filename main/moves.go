@@ -15,6 +15,10 @@ type state struct {
 func (s state) curAddr() piece {
 	return s.addr(s.x, s.y)
 }
+func (s state) setCur(x, y int) state {
+	s.x, s.y = x, y
+	return s
+}
 
 // TEST
 func (s state) addr(x int, y int) piece {
@@ -32,7 +36,7 @@ func (s state) set(p piece, x int, y int) state {
 func (s state) move(p piece, x int, y int) state {
 	//fmt.Println("i moved", s.curAddr().whoami(), "from: ", s.x, s.y, " to: ", x, y)
 	t := s.set(empty{true}, s.x, s.y)
-	return t.set(p, x, y)
+	return t.set(s.curAddr(), x, y)
 }
 
 func (s state) emptyBoard() state {

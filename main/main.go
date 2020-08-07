@@ -12,8 +12,11 @@ var allocSize int
 func main() {
 	rand.Seed(time.Now().UnixNano())
 	var test1 = createSimpleBoard()
-
-	fmt.Println(evaluate(test1, 1))
+	for y := 0; y < 8; y++ {
+		for x := 0; x < 8; x++ {
+			fmt.Println(len(test1.setCur(x, y).curAddr().possibleMoves(test1.setCur(x, y))), test1.setCur(x, y).curAddr().whoami(), x, y)
+		}
+	}
+	fmt.Println(evaluate(test1, 2))
 	//fmt.Println(len(x))
-
 }
