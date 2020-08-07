@@ -572,7 +572,8 @@ func rightDown(now state) []state {
 
 // FIXME: mozna zrobic szybciej jezeli unikniemy realokacji np przez zrobienie statycznych tablic
 func crosses(now state) []state {
-	var possibleMoves []state
+	//var possibleMoves []state
+	possibleMoves := make([]state, 0, 16)
 	possibleMoves = append(possibleMoves, leftUp(now)...)
 	possibleMoves = append(possibleMoves, rightUp(now)...)
 	possibleMoves = append(possibleMoves, leftDown(now)...)

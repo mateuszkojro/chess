@@ -131,16 +131,16 @@ func TestUp(t *testing.T) {
 // test  down section
 // ----------------------
 
-func Test7RowIsBorderDown(t *testing.T) {
+func Test0RowIsBorderDown(t *testing.T) {
 	//tworze state na granicy
-	var test = state{0, 7, [64]piece{}}
+	var test = state{0, 0, [64]piece{}}
 	if isBorderDown(test) == false {
 		t.Errorf("Jestem na 8 rzedzie a `isBorderDown` zwraca: %t", isBorderDown(test))
 	}
 }
-func Test6RowIsBorderDown(t *testing.T) {
+func Test1RowIsBorderDown(t *testing.T) {
 	//tworze state na granicy
-	var test = state{0, 6, [64]piece{}}
+	var test = state{0, 1, [64]piece{}}
 	if isBorderDown(test) == true {
 		t.Errorf("Jestem na 7 rzedzie a `isBorderDown` zwraca: %t", isBorderDown(test))
 	}
@@ -355,7 +355,8 @@ func BenchmarkStepCross(b *testing.B) {
 var result4 []state
 
 func BenchmarkCross(b *testing.B) {
-	var test = state{4, 4, [64]piece{}}
+	var test = createEmptyBoard()
+	test = test.set(king{true}, 4, 4)
 	var r []state
 	for n := 0; n < b.N; n++ {
 		r = crosses(test)
@@ -368,13 +369,17 @@ func BenchmarkCross(b *testing.B) {
 // -----------------------
 // testing cross section
 // -----------------------
+
 func Test0Col7RowIsBorderLeftUp(t *testing.T) {
 	//tworze state na granicy
 	var test = state{0, 7, [64]piece{}}
 	if isBorderLeftUp(test) == false {
-		t.Errorf("Jestem na 8 rzedzie a `isBorderLeftUp` zwraca: %t", isBorderLeftUp(test))
+		t.Errorf("Jestem na 7 rzedzie i 0 kolumnie a `isBorderLeftUp` zwraca: %t", isBorderLeftUp(test))
 	}
 }
+
+/*
+TEST
 func Test1Col7RowIsBorderLeftUp(t *testing.T) {
 	//tworze state na granicy
 	var test = state{1, 7, [64]piece{}}
@@ -382,19 +387,20 @@ func Test1Col7RowIsBorderLeftUp(t *testing.T) {
 		t.Errorf("Jestem na 7 rzedzie a `isBorderLeftUp` zwraca: %t", isBorderLeftUp(test))
 	}
 }
+func Test0Col6RowIsBorderLeftUp(t *testing.T) {
+	//tworze state na granicy
+	var test = state{0, 6, [64]piece{}}
+	if isBorderLeftUp(test) == false {
+		t.Errorf("Jestem na 0 kolumnie a `isBorderLeftUp` zwraca: %t", isBorderLeftUp(test))
+	}
+}
+*/
 
 func Test1Col6RowIsBorderLeftUp(t *testing.T) {
 	//tworze state na granicy
 	var test = state{1, 6, [64]piece{}}
 	if isBorderLeftUp(test) == true {
-		t.Errorf("Jestem na 8 rzedzie a `isBorderLeftUp` zwraca: %t", isBorderLeftUp(test))
-	}
-}
-func Test0Col6RowIsBorderLeftUp(t *testing.T) {
-	//tworze state na granicy
-	var test = state{0, 6, [64]piece{}}
-	if isBorderLeftUp(test) == false {
-		t.Errorf("Jestem na 7 rzedzie a `isBorderLeftUp` zwraca: %t", isBorderUp(test))
+		t.Errorf("Jestem na 6 rzedzie a `isBorderLeftUp` zwraca: %t", isBorderLeftUp(test))
 	}
 }
 func TestStepLeftUp(t *testing.T) {

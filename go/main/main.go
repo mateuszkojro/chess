@@ -6,13 +6,15 @@ import (
 
 var allocSize int
 
+// FIXME bedzie problem bo przeciez gora i dol sa na odwrot
 func main() {
-	allocSize = 16
-	var test1 = state{0, 4, [64]piece{}}
-	test1 = test1.emptyBoard()
-	test1 = test1.set(king{true}, 0, 0)
-	test1.show()
-	x := up(test1)
+	var test1 = createSimpleBoard()
+	x := test1.addr(4, 1).possibleMoves(test1)
+	if x != nil {
+		x[1].show()
+	} else {
+		fmt.Println("tablica jest pusta")
+	}
 	fmt.Println(len(x))
 
 }
