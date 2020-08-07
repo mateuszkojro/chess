@@ -378,8 +378,8 @@ func Test0Col7RowIsBorderLeftUp(t *testing.T) {
 	}
 }
 
-/*
-TEST
+
+// TEST
 func Test1Col7RowIsBorderLeftUp(t *testing.T) {
 	//tworze state na granicy
 	var test = state{1, 7, [64]piece{}}
@@ -394,7 +394,7 @@ func Test0Col6RowIsBorderLeftUp(t *testing.T) {
 		t.Errorf("Jestem na 0 kolumnie a `isBorderLeftUp` zwraca: %t", isBorderLeftUp(test))
 	}
 }
-*/
+
 
 func Test1Col6RowIsBorderLeftUp(t *testing.T) {
 	//tworze state na granicy

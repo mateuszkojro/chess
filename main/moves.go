@@ -357,7 +357,7 @@ func lines(now state) []state {
 // ---------------------
 
 func isBorderLeftUp(now state) bool {
-	if now.y < 7 || now.x > 0 {
+	if now.y < 7 && now.x > 0 {
 		return false
 	}
 	return true
@@ -411,7 +411,7 @@ func leftUp(now state) []state {
 // ----------------------
 
 func isBorderRightUp(now state) bool {
-	if now.y < 7 || now.x < 7 {
+	if now.y < 7 && now.x < 7 {
 		return false
 	}
 	return true
@@ -463,7 +463,7 @@ func rightUp(now state) []state {
 //  left Down section
 // ---------------------
 func isBorderLeftDown(now state) bool {
-	if now.y > 0 || now.x > 0 {
+	if now.y > 0 && now.x > 0 {
 		return false
 	}
 	return true
@@ -517,7 +517,7 @@ func leftDown(now state) []state {
 // ------------------------
 
 func isBorderRightDown(now state) bool {
-	if now.y > 0 || now.x < 7 {
+	if now.y > 0 && now.x < 7 {
 		return false
 	}
 	return true
