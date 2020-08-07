@@ -114,7 +114,7 @@ func Benchmark1Move(b *testing.B) {
 		for y := 0; y < 2; y++ {
 			for x := 0; x < 8; x++ {
 				result = board.addr(x, y).possibleMoves(board)
-				result = board.addr(x, 8-y).possibleMoves(board)
+				result = board.addr(x, 7-y).possibleMoves(board)
 			}
 		}
 

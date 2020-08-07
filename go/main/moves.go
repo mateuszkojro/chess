@@ -102,8 +102,8 @@ func stepUp(now state) state {
 }
 
 func up(now state) []state {
-	//possibleMoves := make([]state, 0, allocSize)
-	var possibleMoves []state
+	possibleMoves := make([]state, 0, 8)
+	//var possibleMoves []state
 	//fmt.Println("jestem poza petla", checkStepUp(now))
 	for checkStepUp(now) == false {
 		//fmt.Println("jestem w petli")
@@ -125,7 +125,7 @@ func up(now state) []state {
 // -----------------
 
 func isBorderDown(now state) bool {
-	if now.y < 7 {
+	if now.y > 0 {
 		return false
 	}
 	return true
@@ -156,8 +156,8 @@ func stepDown(now state) state {
 }
 
 func down(now state) []state {
-	//possibleMoves := make([]state, 0, allocSize)
-	var possibleMoves []state
+	possibleMoves := make([]state, 0, 8)
+	//var possibleMoves []state
 	//fmt.Println("jestem poza petla", checkStepDown(now))
 	for checkStepDown(now) == false {
 		//fmt.Println("jestem w petli")
@@ -196,12 +196,12 @@ func isLeftEnemyPiece(now state) bool {
 
 // TEST
 func checkStepLeft(now state) bool {
+	//fmt.Println("is border Left: ", isBorderLeft(now))
 	if isBorderLeft(now) {
-		return false
-	} else if isLeftEmpty(now) {
-		return false
+		return true
 	}
-	return true
+	//fmt.Println("is Left empty: ", isLeftEmpty(now))
+	return isLeftEmpty(now)
 }
 
 func stepLeft(now state) state {
@@ -209,8 +209,11 @@ func stepLeft(now state) state {
 }
 
 func left(now state) []state {
-	var possibleMoves []state
-	for !checkStepLeft(now) {
+	possibleMoves := make([]state, 0, 8)
+	//var possibleMoves []state
+	//fmt.Println("jestem poza petla", checkStepLeft(now))
+	for checkStepLeft(now) == false {
+		//fmt.Println("jestem w petli")
 		if isLeftEnemyPiece(now) {
 			possibleMoves = append(possibleMoves, stepLeft(now))
 			break
@@ -227,7 +230,6 @@ func left(now state) []state {
 // ------------------
 //  right section
 // ------------------
-// -----------------
 func isBorderRight(now state) bool {
 	if now.x < 7 {
 		return false
@@ -247,12 +249,12 @@ func isRightEnemyPiece(now state) bool {
 
 // TEST
 func checkStepRight(now state) bool {
+	//fmt.Println("is border Right: ", isBorderRight(now))
 	if isBorderRight(now) {
-		return false
-	} else if isRightEmpty(now) {
-		return false
+		return true
 	}
-	return true
+	//fmt.Println("is Right empty: ", isRightEmpty(now))
+	return isRightEmpty(now)
 }
 
 func stepRight(now state) state {
@@ -260,8 +262,11 @@ func stepRight(now state) state {
 }
 
 func right(now state) []state {
-	var possibleMoves []state
-	for !checkStepRight(now) {
+	possibleMoves := make([]state, 0, 8)
+	//var possibleMoves []state
+	//fmt.Println("jestem poza petla", checkStepRight(now))
+	for checkStepRight(now) == false {
+		//fmt.Println("jestem w petli")
 		if isRightEnemyPiece(now) {
 			possibleMoves = append(possibleMoves, stepRight(now))
 			break
@@ -275,13 +280,14 @@ func right(now state) []state {
 
 // ===
 
-// ----
-// combined s
-// ----
+// --------------
+// combined lines
+// --------------
 
 // FIXME: mozna zrobic szybciej jezeli unikniemy realokacji np przez zrobienie statycznych tablic
 func lines(now state) []state {
-	var possibleMoves []state
+	//var possibleMoves []state
+	possibleMoves := make([]state, 0, 16)
 	possibleMoves = append(possibleMoves, up(now)...)
 	possibleMoves = append(possibleMoves, down(now)...)
 	possibleMoves = append(possibleMoves, left(now)...)
@@ -319,12 +325,12 @@ func isLeftUpEnemyPiece(now state) bool {
 
 // TEST
 func checkStepLeftUp(now state) bool {
+	//fmt.Println("is border LeftUp: ", isBorderLeftUp(now))
 	if isBorderLeftUp(now) {
-		return false
-	} else if isLeftUpEmpty(now) {
-		return false
+		return true
 	}
-	return true
+	//fmt.Println("is LeftUp empty: ", isLeftUpEmpty(now))
+	return isLeftUpEmpty(now)
 }
 
 func stepLeftUp(now state) state {
@@ -332,8 +338,11 @@ func stepLeftUp(now state) state {
 }
 
 func leftUp(now state) []state {
-	var possibleMoves []state
-	for !checkStepLeftUp(now) {
+	possibleMoves := make([]state, 0, 8)
+	//var possibleMoves []state
+	//fmt.Println("jestem poza petla", checkStepLeftUp(now))
+	for checkStepLeftUp(now) == false {
+		//fmt.Println("jestem w petli")
 		if isLeftUpEnemyPiece(now) {
 			possibleMoves = append(possibleMoves, stepLeftUp(now))
 			break

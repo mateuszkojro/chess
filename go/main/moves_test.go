@@ -35,10 +35,10 @@ func BenchmarkStepLines(b *testing.B) {
 	var test = state{4, 4, [64]piece{}}
 	var r state
 	for n := 0; n < b.N; n++ {
-		r = stepRight(test)
-		r = stepLeft(test)
+		//r = stepRight(test)
+		//r = stepLeft(test)
 		r = stepUp(test)
-		r = stepDown(test)
+		//r = stepDown(test)
 	}
 	result1 = r
 }
@@ -47,6 +47,8 @@ var result2 []state
 
 func BenchmarkLines(b *testing.B) {
 	var test = state{4, 4, [64]piece{}}
+	test = test.emptyBoard()
+	test = test.set(king{true}, 4, 4)
 	var r []state
 	for n := 0; n < b.N; n++ {
 		r = lines(test)
@@ -178,17 +180,14 @@ func TestDown(t *testing.T) {
 		t.Errorf("Dlugosci recznej i wygenerowanej tablicy nie sa rowne: %v != %v ", len(handTable), len(down(test1)))
 		return
 	}
-	fmt.Println("tu")
 
 	for i := 0; i < 3; i++ {
 		if handTable[i] != down(test1)[i] {
-
 			fmt.Println("Hand")
 			handTable[i].show()
 			fmt.Println()
 			fmt.Println("Auto")
 			down(test1)[i].show()
-
 			t.Errorf("Tablice nie sa rowne")
 		}
 	}
@@ -198,7 +197,7 @@ func TestDown(t *testing.T) {
 // ---
 
 // ----------------------
-// test  left section
+// test left section
 // ----------------------
 
 func Test0ColumnIsBorderLeft(t *testing.T) {
@@ -217,32 +216,48 @@ func Test1ColumnIsBorderLeft(t *testing.T) {
 }
 func TestStepLeft(t *testing.T) {
 	//tworze state na granicy
-	var a king
-	var test1 = state{1, 0, [64]piece{}}
-	test1.tab[1] = a
+	var test1 = state{0, 0, [64]piece{}}
+	test1 = test1.emptyBoard()
+	test1 = test1.set(king{true}, 1, 0)
 	var test2 = stepLeft(test1)
-	test1.tab[0] = a
+	test1 = test1.set(empty{true}, 1, 0)
+	test1 = test1.set(king{true}, 0, 0)
+	test1 = test1.set(empty{true}, 1, 0)
 	test1.x--
+
 	if test1 != test2 {
-		t.Errorf("Manulane przesuniecie nie jest rowne stepDown: %v != %v ", test1, test2)
+		test1.show()
+		test2.show()
+		t.Errorf("Manulane przesuniecie nie jest rowne stepLeft")
 	}
 }
 func TestLeft(t *testing.T) {
-	var test1 = state{4, 0, [64]piece{}}
-
-	handTable := [4]state{
-		state{3, 0, [64]piece{}},
-		state{2, 0, [64]piece{}},
-		state{1, 0, [64]piece{}},
+	var test1 = state{0, 4, [64]piece{}}
+	test1 = test1.emptyBoard()
+	test1 = test1.set(king{true}, 3, 0)
+	handTable := [3]state{
+		state{0, 0, [64]piece{}},
+		state{0, 0, [64]piece{}},
 		state{0, 0, [64]piece{}}}
+
+	for i := 0; i < len(handTable); i++ {
+		handTable[i] = handTable[i].emptyBoard()
+		handTable[i] = handTable[i].set(king{true}, 2-i, 0)
+	}
 
 	if len(left(test1)) != len(handTable) {
 		t.Errorf("Dlugosci recznej i wygenerowanej tablicy nie sa rowne: %v != %v ", len(handTable), len(left(test1)))
 		return
 	}
-	for i := 0; i < 4; i++ {
+
+	for i := 0; i < 3; i++ {
 		if handTable[i] != left(test1)[i] {
-			t.Errorf("Tablice nie sa rowne: %v != %v", handTable, left(test1))
+			fmt.Println("Hand")
+			handTable[i].show()
+			fmt.Println()
+			fmt.Println("Auto")
+			left(test1)[i].show()
+			t.Errorf("Tablice nie sa rowne")
 		}
 	}
 
@@ -271,31 +286,47 @@ func Test6ColumnIsBorderLeft(t *testing.T) {
 func TestStepRight(t *testing.T) {
 	//tworze state na granicy
 	var test1 = state{0, 0, [64]piece{}}
-	var a king
-	test1.tab[0] = a
+	test1 = test1.emptyBoard()
+	test1 = test1.set(king{true}, 1, 0)
 	var test2 = stepRight(test1)
-	test1.tab[1] = a
+	test1 = test1.set(empty{true}, 1, 0)
+	test1 = test1.set(king{true}, 2, 0)
+	test1 = test1.set(empty{true}, 1, 0)
 	test1.x++
+
 	if test1 != test2 {
-		t.Errorf("Manulane przesuniecie nie jest rowne stepRight: %v != %v ", test1, test2)
+		test1.show()
+		test2.show()
+		t.Errorf("Manulane przesuniecie nie jest rowne stepRight")
 	}
 }
 func TestRight(t *testing.T) {
-	var test1 = state{3, 0, [64]piece{}}
+	var test1 = state{0, 4, [64]piece{}}
+	test1 = test1.emptyBoard()
+	test1 = test1.set(king{true}, 4, 0)
+	handTable := [3]state{
+		state{0, 0, [64]piece{}},
+		state{0, 0, [64]piece{}},
+		state{0, 0, [64]piece{}}}
 
-	handTable := [4]state{
-		state{4, 0, [64]piece{}},
-		state{5, 0, [64]piece{}},
-		state{6, 0, [64]piece{}},
-		state{7, 0, [64]piece{}}}
+	for i := 0; i < len(handTable); i++ {
+		handTable[i] = handTable[i].emptyBoard()
+		handTable[i] = handTable[i].set(king{true}, 5+i, 0)
+	}
 
 	if len(right(test1)) != len(handTable) {
 		t.Errorf("Dlugosci recznej i wygenerowanej tablicy nie sa rowne: %v != %v ", len(handTable), len(right(test1)))
 		return
 	}
-	for i := 0; i < 4; i++ {
+
+	for i := 0; i < 3; i++ {
 		if handTable[i] != right(test1)[i] {
-			t.Errorf("Tablice nie sa rowne: %v != %v", handTable, right(test1))
+			fmt.Println("Hand")
+			handTable[i].show()
+			fmt.Println()
+			fmt.Println("Auto")
+			right(test1)[i].show()
+			t.Errorf("Tablice nie sa rowne")
 		}
 	}
 
@@ -368,32 +399,49 @@ func Test0Col6RowIsBorderLeftUp(t *testing.T) {
 }
 func TestStepLeftUp(t *testing.T) {
 	//tworze state na granicy
-	var test1 = state{1, 1, [64]piece{}}
-	var a king
-	test1.tab[9] = a
+	var test1 = state{0, 0, [64]piece{}}
+	test1 = test1.emptyBoard()
+	test1 = test1.set(king{true}, 1, 1)
 	var test2 = stepLeftUp(test1)
-	test1.tab[16] = a
-	test1.y++
+	test1 = test1.set(empty{true}, 1, 1)
+	test1 = test1.set(king{true}, 0, 2)
+	test1 = test1.set(empty{true}, 1, 1)
 	test1.x--
+	test1.y++
+
 	if test1 != test2 {
-		t.Errorf("Manulane przesuniecie nie jest rowne stepUp: %v != %v ", test1, test2)
+		test1.show()
+		test2.show()
+		t.Errorf("Manulane przesuniecie nie jest rowne stepLeftUp")
 	}
 }
 func TestLeftUp(t *testing.T) {
-	var test1 = state{3, 4, [64]piece{}}
-
+	var test1 = state{0, 4, [64]piece{}}
+	test1 = test1.emptyBoard()
+	test1 = test1.set(king{true}, 3, 4)
 	handTable := [3]state{
-		state{2, 5, [64]piece{}},
-		state{1, 6, [64]piece{}},
-		state{0, 7, [64]piece{}}}
+		state{0, 0, [64]piece{}},
+		state{0, 0, [64]piece{}},
+		state{0, 0, [64]piece{}}}
+
+	for i := 0; i < len(handTable); i++ {
+		handTable[i] = handTable[i].emptyBoard()
+		handTable[i] = handTable[i].set(king{true}, 2-i, 5+i)
+	}
 
 	if len(leftUp(test1)) != len(handTable) {
 		t.Errorf("Dlugosci recznej i wygenerowanej tablicy nie sa rowne: %v != %v ", len(handTable), len(leftUp(test1)))
 		return
 	}
+
 	for i := 0; i < 3; i++ {
 		if handTable[i] != leftUp(test1)[i] {
-			t.Errorf("Tablice nie sa rowne: %v != %v", handTable, leftUp(test1))
+			fmt.Println("Hand")
+			handTable[i].show()
+			fmt.Println()
+			fmt.Println("Auto")
+			leftUp(test1)[i].show()
+			t.Errorf("Tablice nie sa rowne")
 		}
 	}
 
