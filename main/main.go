@@ -2,19 +2,18 @@ package main
 
 import (
 	"fmt"
+	"math/rand"
+	"time"
 )
 
 var allocSize int
 
 // FIXME bedzie problem bo przeciez gora i dol sa na odwrot
 func main() {
+	rand.Seed(time.Now().UnixNano())
 	var test1 = createSimpleBoard()
-	x := test1.addr(4, 1).possibleMoves(test1)
-	if x != nil {
-		x[1].show()
-	} else {
-		fmt.Println("tablica jest pusta")
-	}
-	fmt.Println(len(x))
+
+	fmt.Println(evaluate(test1, 1))
+	//fmt.Println(len(x))
 
 }

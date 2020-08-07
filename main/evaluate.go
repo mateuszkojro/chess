@@ -1,19 +1,27 @@
 package main
 
-/*
 func evaluate(now state, depth int) int {
-	for piece := range pieces {
-		for state := range piece.possibleMoves(now) {
-			if depth > 0 {
-				depth--
-				return evaluate(state, depth)
+	if depth > 0 {
+		depth--
+		possibleMoves := make([]state, 0, 32)
+		for i := 0; i < 64; i++ {
+			possibleMoves = now.tab[i].possibleMoves(now)
+			for j := 0; j < len(possibleMoves); j++ {
+				return evaluate(possibleMoves[j], depth)
 			}
-			return analyzeBoard(state)
 		}
+
 	}
+	return analyzeBoard(now)
 }
-*/
 
 func analyzeBoard(now state) int {
-	return 1
+	var eval int32
+	for i := 0; i < 64; i++ {
+		x := now.tab[i]
+		for j := 0; j < len(x.possibleMoves(now)); j++ {
+			eval++
+		}
+	}
+	return int(eval)
 }
