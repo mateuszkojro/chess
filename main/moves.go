@@ -71,38 +71,34 @@ func (s state) show() {
 // ----------------------------
 
 func createEmptyBoard() state {
-	return state{}
+	var board = state{0, 0, [64]piece{}}
+	board = board.emptyBoard()
+	return board
 }
 
 func createSimpleBoard() state {
 	var board = state{0, 0, [64]piece{}}
-	var p pawn
 	for i := 0; i < 8; i++ {
-		board = board.set(p, i, 1)
-		board = board.set(p, i, 6)
+		board = board.set(pawn{true, false}, i, 1)
+		board = board.set(pawn{false, false}, i, 6)
 	}
-	var r rook
-	var k king
-	var kn knight
-	var bi bishop
-	var q queen
 
-	board = board.set(r, 0, 0)
-	board = board.set(r, 7, 0)
-	board = board.set(r, 0, 7)
-	board = board.set(r, 7, 7)
-	board = board.set(kn, 1, 0)
-	board = board.set(kn, 6, 0)
-	board = board.set(kn, 1, 7)
-	board = board.set(kn, 6, 7)
-	board = board.set(bi, 2, 0)
-	board = board.set(bi, 5, 0)
-	board = board.set(bi, 2, 7)
-	board = board.set(bi, 5, 7)
-	board = board.set(q, 3, 0)
-	board = board.set(q, 3, 7)
-	board = board.set(k, 4, 0)
-	board = board.set(k, 4, 7)
+	board = board.set(rook{true}, 0, 0)
+	board = board.set(rook{true}, 7, 0)
+	board = board.set(rook{false}, 0, 7)
+	board = board.set(rook{false}, 7, 7)
+	board = board.set(knight{true}, 1, 0)
+	board = board.set(knight{true}, 6, 0)
+	board = board.set(knight{false}, 1, 7)
+	board = board.set(knight{false}, 6, 7)
+	board = board.set(bishop{true}, 2, 0)
+	board = board.set(bishop{true}, 5, 0)
+	board = board.set(bishop{false}, 2, 7)
+	board = board.set(bishop{false}, 5, 7)
+	board = board.set(queen{true}, 3, 0)
+	board = board.set(queen{false}, 3, 7)
+	board = board.set(king{true}, 4, 0)
+	board = board.set(king{false}, 4, 7)
 
 	var e empty
 	for i := 0; i < 8; i++ {
