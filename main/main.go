@@ -17,6 +17,9 @@ func main() {
 			fmt.Println(len(test1.setCur(x, y).curAddr().possibleMoves(test1.setCur(x, y))), test1.setCur(x, y).curAddr().whoami(), x, y)
 		}
 	}
+	test1 = createEmptyBoard()
+	test1 = test1.set(queen{true}, 4, 4)
+	fmt.Println(len(test1.curAddr().possibleMoves(test1)))
 	fmt.Println(evaluate(test1, 2))
 	//fmt.Println(len(x))
 }

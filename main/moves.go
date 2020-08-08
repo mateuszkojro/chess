@@ -133,7 +133,7 @@ func isBorderUp(now state) bool {
 
 // TEST
 func isUpEmpty(now state) bool {
-	return stepUp(now).curAddr().isEmpty()
+	return now.addr(now.x, now.y+1).isEmpty()
 }
 
 // TEST
@@ -148,7 +148,7 @@ func checkStepUp(now state) bool {
 		return true
 	}
 	//fmt.Println("is up empty: ", isUpEmpty(now))
-	return isUpEmpty(now)
+	return !isUpEmpty(now)
 }
 
 func stepUp(now state) state {
@@ -187,7 +187,7 @@ func isBorderDown(now state) bool {
 
 // TEST
 func isDownEmpty(now state) bool {
-	return stepDown(now).curAddr().isEmpty()
+	return now.addr(now.x, now.y-1).isEmpty()
 }
 
 // TEST
@@ -202,7 +202,7 @@ func checkStepDown(now state) bool {
 		return true
 	}
 	//fmt.Println("is Down empty: ", isDownEmpty(now))
-	return isDownEmpty(now)
+	return !isDownEmpty(now)
 }
 
 func stepDown(now state) state {
@@ -240,7 +240,7 @@ func isBorderLeft(now state) bool {
 
 // TEST
 func isLeftEmpty(now state) bool {
-	return stepLeft(now).curAddr().isEmpty()
+	return now.addr(now.x-1, now.y).isEmpty()
 }
 
 // TEST
@@ -255,7 +255,7 @@ func checkStepLeft(now state) bool {
 		return true
 	}
 	//fmt.Println("is Left empty: ", isLeftEmpty(now))
-	return isLeftEmpty(now)
+	return !isLeftEmpty(now)
 }
 
 func stepLeft(now state) state {
@@ -293,7 +293,7 @@ func isBorderRight(now state) bool {
 
 // TEST
 func isRightEmpty(now state) bool {
-	return stepRight(now).curAddr().isEmpty()
+	return now.addr(now.x+1, now.y).isEmpty()
 }
 
 // TEST
@@ -308,7 +308,7 @@ func checkStepRight(now state) bool {
 		return true
 	}
 	//fmt.Println("is Right empty: ", isRightEmpty(now))
-	return isRightEmpty(now)
+	return !isRightEmpty(now)
 }
 
 func stepRight(now state) state {
@@ -369,7 +369,7 @@ func isBorderLeftUp(now state) bool {
 
 // TEST
 func isLeftUpEmpty(now state) bool {
-	return stepLeftUp(now).curAddr().isEmpty()
+	return now.addr(now.x-1, now.y+1).isEmpty()
 }
 
 // TEST
@@ -384,7 +384,7 @@ func checkStepLeftUp(now state) bool {
 		return true
 	}
 	//fmt.Println("is LeftUp empty: ", isLeftUpEmpty(now))
-	return isLeftUpEmpty(now)
+	return !isLeftUpEmpty(now)
 }
 
 func stepLeftUp(now state) state {
@@ -423,7 +423,7 @@ func isBorderRightUp(now state) bool {
 
 // TEST
 func isRightUpEmpty(now state) bool {
-	return stepRightUp(now).curAddr().isEmpty()
+	return now.addr(now.x+1, now.y+1).isEmpty()
 }
 
 // TEST
@@ -438,7 +438,7 @@ func checkStepRightUp(now state) bool {
 		return true
 	}
 	//fmt.Println("is RightUp empty: ", isRightUpEmpty(now))
-	return isRightUpEmpty(now)
+	return !isRightUpEmpty(now)
 }
 
 func stepRightUp(now state) state {
@@ -475,7 +475,7 @@ func isBorderLeftDown(now state) bool {
 
 // TEST
 func isLeftDownEmpty(now state) bool {
-	return stepLeftDown(now).curAddr().isEmpty()
+	return now.addr(now.x-1, now.y-1).isEmpty()
 }
 
 // TEST
@@ -490,7 +490,7 @@ func checkStepLeftDown(now state) bool {
 		return true
 	}
 	//fmt.Println("is LeftDown empty: ", isLeftDownEmpty(now))
-	return isLeftDownEmpty(now)
+	return !isLeftDownEmpty(now)
 }
 
 func stepLeftDown(now state) state {
@@ -529,7 +529,7 @@ func isBorderRightDown(now state) bool {
 
 // TEST
 func isRightDownEmpty(now state) bool {
-	return stepRightDown(now).curAddr().isEmpty()
+	return now.addr(now.x+1, now.y-1).isEmpty()
 }
 
 // TEST
@@ -544,7 +544,7 @@ func checkStepRightDown(now state) bool {
 		return true
 	}
 	//fmt.Println("is RightDown empty: ", isRightDownEmpty(now))
-	return isRightDownEmpty(now)
+	return !isRightDownEmpty(now)
 }
 
 func stepRightDown(now state) state {

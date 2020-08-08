@@ -21,7 +21,6 @@ func TestMove(t *testing.T) {
 	}
 
 }
-
 func TestCheckStepUp(t *testing.T) {
 	var board = createSimpleBoard()
 	board = board.setCur(4, 1)
