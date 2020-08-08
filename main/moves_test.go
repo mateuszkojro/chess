@@ -5,6 +5,28 @@ import (
 	"testing"
 )
 
+func TestSet(t *testing.T) {
+	board := createEmptyBoard()
+	k := king{true}
+	board = board.set(k, 4, 4)
+	if board.addr(4, 4) != k {
+		t.Errorf("@set nie zgadza sie z @addr")
+	}
+	if board.curAddr() != k {
+		t.Errorf("@set nie zgadza sie z @curAddr")
+	}
+}
+
+func TestAddr(t *testing.T) {
+	board := createEmptyBoard()
+	k := king{true}
+	board = board.set(k, 7, 7)
+	if board.addr(7, 7) != board.tab[63] {
+		t.Errorf("@addr nie rowna sie @state.tab")
+	}
+
+}
+
 func TestMove(t *testing.T) {
 	s := state{0, 0, [64]piece{}}
 	s = s.emptyBoard()
