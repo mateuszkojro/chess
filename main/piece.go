@@ -1,16 +1,10 @@
 package main
 
-/*
-dla bialych
-if num > 0{
-	if = 10
-	if = 40
-	if = 41
-	if = 50
-	if = 90
-	if = 1000
+func colorText(text string) string {
+	colorReset := "\033[0m"
+	color := "\033[31m"
+	return string(color) + text + string(colorReset)
 }
-*/
 
 // TODO napisac testy dla wszystkich figur
 
@@ -23,6 +17,7 @@ type piece interface {
 	getColor() bool
 	isEmpty() bool
 	whoami() string
+	value() int
 }
 
 type empty struct {
@@ -42,6 +37,10 @@ func (e empty) isEmpty() bool {
 
 func (e empty) whoami() string {
 	return ("   .  ")
+}
+
+func (e empty) value() int {
+	return 0
 }
 
 // ----
@@ -89,7 +88,14 @@ func (k king) isEmpty() bool {
 }
 
 func (k king) whoami() string {
-	return (" king ")
+	text := (" king ")
+	if k.getColor() == true {
+		return text
+	}
+	return colorText(text)
+}
+func (k king) value() int {
+	return 200
 }
 
 // -----
@@ -115,7 +121,14 @@ func (q queen) isEmpty() bool {
 }
 
 func (q queen) whoami() string {
-	return (" queen")
+	text := (" queen")
+	if q.getColor() == true {
+		return text
+	}
+	return colorText(text)
+}
+func (q queen) value() int {
+	return 9
 }
 
 // ----
@@ -137,7 +150,14 @@ func (r rook) isEmpty() bool {
 }
 
 func (r rook) whoami() string {
-	return (" rook ")
+	text := (" rook ")
+	if r.getColor() == true {
+		return text
+	}
+	return colorText(text)
+}
+func (r rook) value() int {
+	return 5
 }
 
 // ------
@@ -159,7 +179,14 @@ func (b bishop) isEmpty() bool {
 }
 
 func (b bishop) whoami() string {
-	return ("bishop")
+	text := ("bishop")
+	if b.getColor() == true {
+		return text
+	}
+	return colorText(text)
+}
+func (b bishop) value() int {
+	return 3
 }
 
 // ------
@@ -182,7 +209,14 @@ func (k knight) isEmpty() bool {
 }
 
 func (k knight) whoami() string {
-	return ("knight")
+	text := ("knight")
+	if k.getColor() == true {
+		return text
+	}
+	return colorText(text)
+}
+func (k knight) value() int {
+	return 3
 }
 
 // ----
@@ -224,5 +258,12 @@ func (p pawn) isEmpty() bool {
 }
 
 func (p pawn) whoami() string {
-	return (" pawn ")
+	text := (" pawn ")
+	if p.getColor() == true {
+		return text
+	}
+	return colorText(text)
+}
+func (p pawn) value() int {
+	return 1
 }

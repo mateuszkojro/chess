@@ -7,8 +7,9 @@ import "fmt"
 // ----------------------------------
 
 type state struct {
-	x, y int
-	tab  [64]piece
+	x, y   int
+	tab    [64]piece
+	player bool
 }
 
 // TEST
@@ -71,13 +72,13 @@ func (s state) show() {
 // ----------------------------
 
 func createEmptyBoard() state {
-	var board = state{0, 0, [64]piece{}}
+	var board = state{0, 0, [64]piece{}, true}
 	board = board.emptyBoard()
 	return board
 }
 
 func createSimpleBoard() state {
-	var board = state{0, 0, [64]piece{}}
+	var board = state{0, 0, [64]piece{}, true}
 	for i := 0; i < 8; i++ {
 		board = board.set(pawn{true, false}, i, 1)
 		board = board.set(pawn{false, false}, i, 6)

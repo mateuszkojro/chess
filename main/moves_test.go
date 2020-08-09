@@ -28,11 +28,11 @@ func TestAddr(t *testing.T) {
 }
 
 func TestMove(t *testing.T) {
-	s := state{0, 0, [64]piece{}}
+	s := state{0, 0, [64]piece{}, true}
 	s = s.emptyBoard()
 	s = s.set(king{true}, 0, 0)
 	s = s.move(s.curAddr(), 2, 2)
-	s2 := state{0, 0, [64]piece{}}
+	s2 := state{0, 0, [64]piece{}, true}
 	s2 = s2.emptyBoard()
 	s2 = s2.set(king{true}, 2, 2)
 	if s != s2 {
@@ -76,7 +76,7 @@ func TestCheckStep(t *testing.T) {
 var result1 state
 
 func BenchmarkStepLines(b *testing.B) {
-	var test = state{4, 4, [64]piece{}}
+	var test = state{4, 4, [64]piece{}, true}
 	var r state
 	for n := 0; n < b.N; n++ {
 		//r = stepRight(test)
@@ -90,7 +90,7 @@ func BenchmarkStepLines(b *testing.B) {
 var result2 []state
 
 func BenchmarkLines(b *testing.B) {
-	var test = state{4, 4, [64]piece{}}
+	var test = state{4, 4, [64]piece{}, true}
 	test = test.emptyBoard()
 	test = test.set(king{true}, 4, 4)
 	var r []state
@@ -107,21 +107,21 @@ func BenchmarkLines(b *testing.B) {
 // -----------------------
 func Test7RowIsBorderUp(t *testing.T) {
 	//tworze state na granicy
-	var test = state{0, 7, [64]piece{}}
+	var test = state{0, 7, [64]piece{}, true}
 	if isBorderUp(test) == false {
 		t.Errorf("Jestem na 8 rzedzie a `isBorderUp` zwraca: %t", isBorderUp(test))
 	}
 }
 func Test6RowIsBorderUp(t *testing.T) {
 	//tworze state na granicy
-	var test = state{0, 6, [64]piece{}}
+	var test = state{0, 6, [64]piece{}, true}
 	if isBorderUp(test) == true {
 		t.Errorf("Jestem na 7 rzedzie a `isBorderUp` zwraca: %t", isBorderUp(test))
 	}
 }
 func TestStepUp(t *testing.T) {
 	//tworze state na granicy
-	var test1 = state{0, 0, [64]piece{}}
+	var test1 = state{0, 0, [64]piece{}, true}
 	test1 = test1.emptyBoard()
 	test1 = test1.set(king{true}, 0, 0)
 	var test2 = stepUp(test1)
@@ -137,13 +137,13 @@ func TestStepUp(t *testing.T) {
 	}
 }
 func TestUp(t *testing.T) {
-	var test1 = state{0, 4, [64]piece{}}
+	var test1 = state{0, 4, [64]piece{}, true}
 	test1 = test1.emptyBoard()
 	test1 = test1.set(king{true}, 0, 4)
 	handTable := [3]state{
-		state{0, 0, [64]piece{}},
-		state{0, 0, [64]piece{}},
-		state{0, 0, [64]piece{}}}
+		state{0, 0, [64]piece{}, true},
+		state{0, 0, [64]piece{}, true},
+		state{0, 0, [64]piece{}, true}}
 
 	for i := 0; i < len(handTable); i++ {
 		handTable[i] = handTable[i].emptyBoard()
@@ -177,21 +177,21 @@ func TestUp(t *testing.T) {
 
 func Test0RowIsBorderDown(t *testing.T) {
 	//tworze state na granicy
-	var test = state{0, 0, [64]piece{}}
+	var test = state{0, 0, [64]piece{}, true}
 	if isBorderDown(test) == false {
 		t.Errorf("Jestem na 8 rzedzie a `isBorderDown` zwraca: %t", isBorderDown(test))
 	}
 }
 func Test1RowIsBorderDown(t *testing.T) {
 	//tworze state na granicy
-	var test = state{0, 1, [64]piece{}}
+	var test = state{0, 1, [64]piece{}, true}
 	if isBorderDown(test) == true {
 		t.Errorf("Jestem na 7 rzedzie a `isBorderDown` zwraca: %t", isBorderDown(test))
 	}
 }
 func TestStepDown(t *testing.T) {
 	//tworze state na granicy
-	var test1 = state{0, 0, [64]piece{}}
+	var test1 = state{0, 0, [64]piece{}, true}
 	test1 = test1.emptyBoard()
 	test1 = test1.set(king{true}, 0, 1)
 	var test2 = stepDown(test1)
@@ -207,13 +207,13 @@ func TestStepDown(t *testing.T) {
 	}
 }
 func TestDown(t *testing.T) {
-	var test1 = state{0, 4, [64]piece{}}
+	var test1 = state{0, 4, [64]piece{}, true}
 	test1 = test1.emptyBoard()
 	test1 = test1.set(king{true}, 0, 3)
 	handTable := [3]state{
-		state{0, 0, [64]piece{}},
-		state{0, 0, [64]piece{}},
-		state{0, 0, [64]piece{}}}
+		state{0, 0, [64]piece{}, true},
+		state{0, 0, [64]piece{}, true},
+		state{0, 0, [64]piece{}, true}}
 
 	for i := 0; i < len(handTable); i++ {
 		handTable[i] = handTable[i].emptyBoard()
@@ -246,21 +246,21 @@ func TestDown(t *testing.T) {
 
 func Test0ColumnIsBorderLeft(t *testing.T) {
 	//tworze state na granicy
-	var test = state{0, 0, [64]piece{}}
+	var test = state{0, 0, [64]piece{}, true}
 	if isBorderDown(test) == false {
 		t.Errorf("Jestem na 0 rzedzie a `isBorderLeft` zwraca: %t", isBorderLeft(test))
 	}
 }
 func Test1ColumnIsBorderLeft(t *testing.T) {
 	//tworze state na granicy
-	var test = state{1, 0, [64]piece{}}
+	var test = state{1, 0, [64]piece{}, true}
 	if isBorderLeft(test) == true {
 		t.Errorf("Jestem na 7 rzedzie a `isBorderLeft` zwraca: %t", isBorderLeft(test))
 	}
 }
 func TestStepLeft(t *testing.T) {
 	//tworze state na granicy
-	var test1 = state{0, 0, [64]piece{}}
+	var test1 = state{0, 0, [64]piece{}, true}
 	test1 = test1.emptyBoard()
 	test1 = test1.set(king{true}, 1, 0)
 	var test2 = stepLeft(test1)
@@ -276,13 +276,13 @@ func TestStepLeft(t *testing.T) {
 	}
 }
 func TestLeft(t *testing.T) {
-	var test1 = state{0, 4, [64]piece{}}
+	var test1 = state{0, 4, [64]piece{}, true}
 	test1 = test1.emptyBoard()
 	test1 = test1.set(king{true}, 3, 0)
 	handTable := [3]state{
-		state{0, 0, [64]piece{}},
-		state{0, 0, [64]piece{}},
-		state{0, 0, [64]piece{}}}
+		state{0, 0, [64]piece{}, true},
+		state{0, 0, [64]piece{}, true},
+		state{0, 0, [64]piece{}, true}}
 
 	for i := 0; i < len(handTable); i++ {
 		handTable[i] = handTable[i].emptyBoard()
@@ -315,21 +315,21 @@ func TestLeft(t *testing.T) {
 
 func Test7ColumnIsBorderLeft(t *testing.T) {
 	//tworze state na granicy
-	var test = state{7, 0, [64]piece{}}
+	var test = state{7, 0, [64]piece{}, true}
 	if isBorderDown(test) == false {
 		t.Errorf("Jestem na 0 rzedzie a `isBorderLeft` zwraca: %t", isBorderLeft(test))
 	}
 }
 func Test6ColumnIsBorderLeft(t *testing.T) {
 	//tworze state na granicy
-	var test = state{6, 0, [64]piece{}}
+	var test = state{6, 0, [64]piece{}, true}
 	if isBorderLeft(test) == true {
 		t.Errorf("Jestem na 7 rzedzie a `isBorderLeft` zwraca: %t", isBorderLeft(test))
 	}
 }
 func TestStepRight(t *testing.T) {
 	//tworze state na granicy
-	var test1 = state{0, 0, [64]piece{}}
+	var test1 = state{0, 0, [64]piece{}, true}
 	test1 = test1.emptyBoard()
 	test1 = test1.set(king{true}, 1, 0)
 	var test2 = stepRight(test1)
@@ -345,13 +345,13 @@ func TestStepRight(t *testing.T) {
 	}
 }
 func TestRight(t *testing.T) {
-	var test1 = state{0, 4, [64]piece{}}
+	var test1 = state{0, 4, [64]piece{}, true}
 	test1 = test1.emptyBoard()
 	test1 = test1.set(king{true}, 4, 0)
 	handTable := [3]state{
-		state{0, 0, [64]piece{}},
-		state{0, 0, [64]piece{}},
-		state{0, 0, [64]piece{}}}
+		state{0, 0, [64]piece{}, true},
+		state{0, 0, [64]piece{}, true},
+		state{0, 0, [64]piece{}, true}}
 
 	for i := 0; i < len(handTable); i++ {
 		handTable[i] = handTable[i].emptyBoard()
@@ -385,7 +385,7 @@ func TestRight(t *testing.T) {
 // ------------------
 
 func BenchmarkStepCross(b *testing.B) {
-	var test = state{4, 4, [64]piece{}}
+	var test = state{4, 4, [64]piece{}, true}
 	var r state
 	for n := 0; n < b.N; n++ {
 		r = stepRightUp(test)
@@ -416,7 +416,7 @@ func BenchmarkCross(b *testing.B) {
 
 func Test0Col7RowIsBorderLeftUp(t *testing.T) {
 	//tworze state na granicy
-	var test = state{0, 7, [64]piece{}}
+	var test = state{0, 7, [64]piece{}, true}
 	if isBorderLeftUp(test) == false {
 		t.Errorf("Jestem na 7 rzedzie i 0 kolumnie a `isBorderLeftUp` zwraca: %t", isBorderLeftUp(test))
 	}
@@ -425,14 +425,14 @@ func Test0Col7RowIsBorderLeftUp(t *testing.T) {
 // TEST
 func Test1Col7RowIsBorderLeftUp(t *testing.T) {
 	//tworze state na granicy
-	var test = state{1, 7, [64]piece{}}
+	var test = state{1, 7, [64]piece{}, true}
 	if isBorderLeftUp(test) == false {
 		t.Errorf("Jestem na 7 rzedzie a `isBorderLeftUp` zwraca: %t", isBorderLeftUp(test))
 	}
 }
 func Test0Col6RowIsBorderLeftUp(t *testing.T) {
 	//tworze state na granicy
-	var test = state{0, 6, [64]piece{}}
+	var test = state{0, 6, [64]piece{}, true}
 	if isBorderLeftUp(test) == false {
 		t.Errorf("Jestem na 0 kolumnie a `isBorderLeftUp` zwraca: %t", isBorderLeftUp(test))
 	}
@@ -440,14 +440,14 @@ func Test0Col6RowIsBorderLeftUp(t *testing.T) {
 
 func Test1Col6RowIsBorderLeftUp(t *testing.T) {
 	//tworze state na granicy
-	var test = state{1, 6, [64]piece{}}
+	var test = state{1, 6, [64]piece{}, true}
 	if isBorderLeftUp(test) == true {
 		t.Errorf("Jestem na 6 rzedzie a `isBorderLeftUp` zwraca: %t", isBorderLeftUp(test))
 	}
 }
 func TestStepLeftUp(t *testing.T) {
 	//tworze state na granicy
-	var test1 = state{0, 0, [64]piece{}}
+	var test1 = state{0, 0, [64]piece{}, true}
 	test1 = test1.emptyBoard()
 	test1 = test1.set(king{true}, 1, 1)
 	var test2 = stepLeftUp(test1)
@@ -464,13 +464,13 @@ func TestStepLeftUp(t *testing.T) {
 	}
 }
 func TestLeftUp(t *testing.T) {
-	var test1 = state{0, 4, [64]piece{}}
+	var test1 = state{0, 4, [64]piece{}, true}
 	test1 = test1.emptyBoard()
 	test1 = test1.set(king{true}, 3, 4)
 	handTable := [3]state{
-		state{0, 0, [64]piece{}},
-		state{0, 0, [64]piece{}},
-		state{0, 0, [64]piece{}}}
+		state{0, 0, [64]piece{}, true},
+		state{0, 0, [64]piece{}, true},
+		state{0, 0, [64]piece{}, true}}
 
 	for i := 0; i < len(handTable); i++ {
 		handTable[i] = handTable[i].emptyBoard()
