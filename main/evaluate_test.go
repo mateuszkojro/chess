@@ -2,22 +2,42 @@ package main
 
 import "testing"
 
-var a int
+var a state
 
+/*
 func BenchmarkEvaluate5(b *testing.B) {
-	var r int
+	var r state
 	for n := 0; n < b.N; n++ {
-		a = evaluate(createSimpleBoard(), 5)
+		r, _ = evaluate(createSimpleBoard(), 5)
+	}
+	a = r
+}
+*/
+
+func BenchmarkEvaluate3(b *testing.B) {
+	var r state
+	for n := 0; n < b.N; n++ {
+		r, _ = evaluate(createSimpleBoard(), 3)
 	}
 	a = r
 }
 
+func BenchmarkEvaluate2(b *testing.B) {
+	var r state
+	for n := 0; n < b.N; n++ {
+		r, _ = evaluate(createSimpleBoard(), 2)
+	}
+	a = r
+}
+
+var i int
+
 func BenchmarkAnalyzeBoard(b *testing.B) {
 	var r int
 	for n := 0; n < b.N; n++ {
-		a = analyzeBoard(createSimpleBoard())
+		r = analyzeBoard(createSimpleBoard())
 	}
-	a = r
+	i = r
 }
 
 func TestAnalyzeBoard(t *testing.T) {

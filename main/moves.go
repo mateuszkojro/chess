@@ -36,8 +36,8 @@ func (s state) set(p piece, x int, y int) state {
 // TODO: mozna lepiej bez figury do wstawienia
 func (s state) move(p piece, x int, y int) state {
 	//fmt.Println("i moved", s.curAddr().whoami(), "from: ", s.x, s.y, " to: ", x, y)
-	t := s.set(empty{true}, s.x, s.y)
-	return t.set(s.curAddr(), x, y)
+	//t := s.set(empty{true}, s.x, s.y)
+	return s.set(empty{true}, s.x, s.y).set(s.curAddr(), x, y)
 }
 
 func (s state) emptyBoard() state {
@@ -153,8 +153,8 @@ func stepUp(now state) state {
 }
 
 func up(now state) []state {
-	possibleMoves := make([]state, 0, 8)
-	//var possibleMoves []state
+	//possibleMoves := make([]state, 0, 8)
+	var possibleMoves []state
 	//fmt.Println("jestem poza petla", checkStepUp(now))
 	for checkStepUp(now) == false {
 		//fmt.Println("jestem w petli")
@@ -207,8 +207,8 @@ func stepDown(now state) state {
 }
 
 func down(now state) []state {
-	possibleMoves := make([]state, 0, 8)
-	//var possibleMoves []state
+	//possibleMoves := make([]state, 0, 8)
+	var possibleMoves []state
 	//fmt.Println("jestem poza petla", checkStepDown(now))
 	for checkStepDown(now) == false {
 		//fmt.Println("jestem w petli")
@@ -260,8 +260,8 @@ func stepLeft(now state) state {
 }
 
 func left(now state) []state {
-	possibleMoves := make([]state, 0, 8)
-	//var possibleMoves []state
+	//possibleMoves := make([]state, 0, 8)
+	var possibleMoves []state
 	//fmt.Println("jestem poza petla", checkStepLeft(now))
 	for checkStepLeft(now) == false {
 		//fmt.Println("jestem w petli")
@@ -313,8 +313,8 @@ func stepRight(now state) state {
 }
 
 func right(now state) []state {
-	possibleMoves := make([]state, 0, 8)
-	//var possibleMoves []state
+	//possibleMoves := make([]state, 0, 8)
+	var possibleMoves []state
 	//fmt.Println("jestem poza petla", checkStepRight(now))
 	for checkStepRight(now) == false {
 		//fmt.Println("jestem w petli")
@@ -338,8 +338,8 @@ func right(now state) []state {
 // FIXME: mozna zrobic szybciej jezeli unikniemy realokacji np przez zrobienie statycznych tablic
 func lines(now state) []state {
 	//var possibleMoves []state
-	possibleMoves := make([]state, 0, 16)
-	possibleMoves = append(possibleMoves, up(now)...)
+	//possibleMoves := make([]state, 0, 16)
+	possibleMoves := up(now)
 	possibleMoves = append(possibleMoves, down(now)...)
 	possibleMoves = append(possibleMoves, left(now)...)
 	possibleMoves = append(possibleMoves, right(now)...)
@@ -389,8 +389,8 @@ func stepLeftUp(now state) state {
 }
 
 func leftUp(now state) []state {
-	possibleMoves := make([]state, 0, 8)
-	//var possibleMoves []state
+	//possibleMoves := make([]state, 0, 8)
+	var possibleMoves []state
 	//fmt.Println("jestem poza petla", checkStepLeftUp(now))
 	for checkStepLeftUp(now) == false {
 		//fmt.Println("jestem w petli")
@@ -443,8 +443,8 @@ func stepRightUp(now state) state {
 }
 
 func rightUp(now state) []state {
-	possibleMoves := make([]state, 0, 8)
-	//var possibleMoves []state
+	//possibleMoves := make([]state, 0, 8)
+	var possibleMoves []state
 	//fmt.Println("jestem poza petla", checkStepRightUp(now))
 	for checkStepRightUp(now) == false {
 		//fmt.Println("jestem w petli")
@@ -495,8 +495,8 @@ func stepLeftDown(now state) state {
 }
 
 func leftDown(now state) []state {
-	possibleMoves := make([]state, 0, 8)
-	//var possibleMoves []state
+	//possibleMoves := make([]state, 0, 8)
+	var possibleMoves []state
 	//fmt.Println("jestem poza petla", checkStepLeftDown(now))
 	for checkStepLeftDown(now) == false {
 		//fmt.Println("jestem w petli")
@@ -549,8 +549,8 @@ func stepRightDown(now state) state {
 }
 
 func rightDown(now state) []state {
-	possibleMoves := make([]state, 0, 8)
-	//var possibleMoves []state
+	//possibleMoves := make([]state, 0, 8)
+	var possibleMoves []state
 	//fmt.Println("jestem poza petla", checkStepRightDown(now))
 	for checkStepRightDown(now) == false {
 		//fmt.Println("jestem w petli")
@@ -574,8 +574,8 @@ func rightDown(now state) []state {
 // FIXME: mozna zrobic szybciej jezeli unikniemy realokacji np przez zrobienie statycznych tablic
 func crosses(now state) []state {
 	//var possibleMoves []state
-	possibleMoves := make([]state, 0, 16)
-	possibleMoves = append(possibleMoves, leftUp(now)...)
+	//possibleMoves := make([]state, 0, 16)
+	possibleMoves := leftUp(now)
 	possibleMoves = append(possibleMoves, rightUp(now)...)
 	possibleMoves = append(possibleMoves, leftDown(now)...)
 	possibleMoves = append(possibleMoves, rightDown(now)...)

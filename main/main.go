@@ -22,6 +22,10 @@ func main() {
 		fmt.Println(len(test1.curAddr().possibleMoves(test1)))
 		fmt.Println(evaluate(test1, 2))
 	*/
-	fmt.Println("analyzeBoard: ", analyzeBoard(createSimpleBoard()))
+
+	fmt.Println("analyzeBoard: ")
+	now, ocena := evaluate(createSimpleBoard(), 5)
+	now.show()
+	fmt.Println("ocena: ", ocena)
 	//fmt.Println(len(x))
 }
