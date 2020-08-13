@@ -13,6 +13,7 @@ type state struct {
 }
 
 // TEST
+// BENCH - duzo czasu tutaj spedzamy
 func (s state) curAddr() piece {
 	return s.addr(s.x, s.y)
 }

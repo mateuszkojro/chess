@@ -30,6 +30,7 @@ func analyzeBoard(now state) int {
 	}
 
 	//fmt.Println(val)
+
 	return val
 }
 
@@ -84,13 +85,19 @@ func (s state) evaluateAlfaBeta(depth int) (state, int) {
 	//Refactor this for fucks sake
 	for y := 0; y < 8; y++ {
 		for x := 0; x < 8; x++ {
-			if s.addr(x, y).isEmpty() == true {
+			//progress(y*8+x, 64)
+			if s.addr(x, y).isEmpty() == false {
 
 				s = s.setCur(x, y)
 				moves := s.moves()
 				for i := 0; i < len(moves); i++ {
 					val = alfaBeta(moves[i], depth, alfa, beta, s.player)
-					maks = max(val, maks)
+					if s.player == true {
+						maks = max(val, maks)
+					} else {
+						maks = min(val, maks)
+					}
+
 					if val == maks {
 						res = moves[i]
 					}
@@ -99,7 +106,7 @@ func (s state) evaluateAlfaBeta(depth int) (state, int) {
 
 		}
 	}
-
+	//fmt.Println("")
 	return res, maks
 }
 

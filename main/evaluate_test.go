@@ -30,6 +30,22 @@ func BenchmarkEvaluate2(b *testing.B) {
 	a = r
 }
 
+func BenchmarkEvaluateAlfa3(b *testing.B) {
+	var r state
+	for n := 0; n < b.N; n++ {
+		r, _ = createSimpleBoard().evaluateAlfaBeta(3)
+	}
+	a = r
+}
+
+func BenchmarkEvaluateAlfa2(b *testing.B) {
+	var r state
+	for n := 0; n < b.N; n++ {
+		r, _ = createSimpleBoard().evaluateAlfaBeta(2)
+	}
+	a = r
+}
+
 var i int
 
 func BenchmarkAnalyzeBoard(b *testing.B) {
