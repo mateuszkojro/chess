@@ -75,6 +75,17 @@ func TestCheckStep(t *testing.T) {
 // ------------------
 var result1 state
 
+func BenchmarkUp(b *testing.B) {
+	var test = state{4, 4, [64]piece{}, true}
+	test = test.emptyBoard()
+	test = test.set(king{true}, 4, 4)
+	var r []state
+	for n := 0; n < b.N; n++ {
+		r = up(test)
+	}
+	result2 = r
+}
+
 func BenchmarkStepLines(b *testing.B) {
 	var test = state{4, 4, [64]piece{}, true}
 	var r state
@@ -410,9 +421,9 @@ func BenchmarkCross(b *testing.B) {
 
 // ---
 
-// -----------------------
+// ---------------------
 // testing cross section
-// -----------------------
+// ---------------------
 
 func Test0Col7RowIsBorderLeftUp(t *testing.T) {
 	//tworze state na granicy

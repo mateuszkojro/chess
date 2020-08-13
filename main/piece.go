@@ -107,9 +107,10 @@ type queen struct {
 }
 
 func (q queen) possibleMoves(now state) []state {
-	var possibleMoves []state
+	//var possibleMoves []state
+	possibleMoves := lines(now)
 	possibleMoves = append(possibleMoves, crosses(now)...)
-	possibleMoves = append(possibleMoves, lines(now)...)
+
 	return possibleMoves
 }
 func (q queen) getColor() bool {

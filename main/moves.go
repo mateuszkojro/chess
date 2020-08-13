@@ -65,6 +65,21 @@ func (s state) show() {
 	}
 }
 
+func (s state) moves() []state {
+
+	var moves []state
+	for y := 0; y < 8; y++ {
+		for x := 0; x < 8; x++ {
+			if s.addr(x, y).getColor() == s.player {
+				s = s.setCur(x, y)
+				moves = append(moves, s.curAddr().possibleMoves(s)...)
+			}
+		}
+	}
+	return moves
+	//return s.curAddr().possibleMoves(s)
+}
+
 // ===
 
 // ----------------------------
@@ -135,7 +150,8 @@ func isUpEmpty(now state) bool {
 
 // TEST
 func isUpEnemyPiece(now state) bool {
-	return now.curAddr().getColor() != stepUp(now).curAddr().getColor()
+	//return now.curAddr().getColor() != stepUp(now.curAddr().getColor()
+	return now.curAddr().getColor() != now.addr(now.x, now.y+1).getColor()
 }
 
 // TEST
@@ -189,7 +205,7 @@ func isDownEmpty(now state) bool {
 
 // TEST
 func isDownEnemyPiece(now state) bool {
-	return now.curAddr().getColor() != stepDown(now).curAddr().getColor()
+	return now.curAddr().getColor() != now.addr(now.x, now.y-1).getColor()
 }
 
 // TEST
@@ -242,7 +258,7 @@ func isLeftEmpty(now state) bool {
 
 // TEST
 func isLeftEnemyPiece(now state) bool {
-	return now.curAddr().getColor() != stepLeft(now).curAddr().getColor()
+	return now.curAddr().getColor() != now.addr(now.x-1, now.y).getColor()
 }
 
 // TEST
@@ -295,7 +311,7 @@ func isRightEmpty(now state) bool {
 
 // TEST
 func isRightEnemyPiece(now state) bool {
-	return now.curAddr().getColor() != stepRight(now).curAddr().getColor()
+	return now.curAddr().getColor() != now.addr(now.x+1, now.y).getColor()
 }
 
 // TEST
@@ -371,7 +387,7 @@ func isLeftUpEmpty(now state) bool {
 
 // TEST
 func isLeftUpEnemyPiece(now state) bool {
-	return now.curAddr().getColor() != stepLeftUp(now).curAddr().getColor()
+	return now.curAddr().getColor() != now.addr(now.x-1, now.y+1).getColor()
 }
 
 // TEST
@@ -425,7 +441,7 @@ func isRightUpEmpty(now state) bool {
 
 // TEST
 func isRightUpEnemyPiece(now state) bool {
-	return now.curAddr().getColor() != stepRightUp(now).curAddr().getColor()
+	return now.curAddr().getColor() != now.addr(now.x+1, now.y+1).getColor()
 }
 
 // TEST
@@ -477,7 +493,7 @@ func isLeftDownEmpty(now state) bool {
 
 // TEST
 func isLeftDownEnemyPiece(now state) bool {
-	return now.curAddr().getColor() != stepLeftDown(now).curAddr().getColor()
+	return now.curAddr().getColor() != now.addr(now.x-1, now.y-1).getColor()
 }
 
 // TEST
@@ -531,7 +547,7 @@ func isRightDownEmpty(now state) bool {
 
 // TEST
 func isRightDownEnemyPiece(now state) bool {
-	return now.curAddr().getColor() != stepRightDown(now).curAddr().getColor()
+	return now.curAddr().getColor() != now.addr(now.x+1, now.y-1).getColor()
 }
 
 // TEST

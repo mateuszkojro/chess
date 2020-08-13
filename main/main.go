@@ -2,12 +2,16 @@ package main
 
 import (
 	"fmt"
+	//	"runtime"
 )
 
 var allocSize int
 
 // FIXME bedzie problem bo przeciez gora i dol sa na odwrot
 func main() {
+	//	runtime.GOMAXPROCS(8)
+	//runtime.GOMAXPROCS(1)
+
 	/*
 		rand.Seed(time.Now().UnixNano())
 		var test1 = createSimpleBoard()
@@ -24,7 +28,28 @@ func main() {
 	*/
 
 	fmt.Println("analyzeBoard: ")
-	now, ocena := evaluate(createSimpleBoard(), 5)
+	now := createSimpleBoard()
+	now.player = !now.player
+	now, ocena := now.evaluateAlfaBeta(2)
+	//now.show()
+	now.player = !now.player
+	now, ocena = now.evaluateAlfaBeta(2)
+
+	count := 5
+
+	for i := 0; i < count; i++ {
+		progress(i, count)
+
+		now, ocena = now.evaluateAlfaBeta(2)
+		now.player = !now.player
+		now, ocena = now.evaluateAlfaBeta(2)
+		now.player = !now.player
+	}
+
+	//fmt.Println(now.player)
+	//now, ocena = now.evaluateAlfaBeta(2)
+	//now.player = !now.player
+	//now, ocena = now.evaluateAlfaBeta(2)
 	now.show()
 	fmt.Println("ocena: ", ocena)
 	//fmt.Println(len(x))
