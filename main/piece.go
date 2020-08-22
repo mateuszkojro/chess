@@ -231,7 +231,8 @@ type pawn struct {
 
 // FIXME sprawddzam zawsze 2 ruchy do przodu nic wiecej
 func (p pawn) possibleMoves(now state) []state {
-	var possibleMoves = make([]state, 0, 1) //[]state
+	//var possibleMoves = make([]state, 0, 1) //[]state
+	var possibleMoves []state
 	if p.getColor() == true {
 		if !checkStepUp(now) {
 			now = stepUp(now)

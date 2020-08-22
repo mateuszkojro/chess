@@ -8,10 +8,9 @@ import (
 
 var allocSize int
 
-// FIXME bedzie problem bo przeciez gora i dol sa na odwrot
 func main() {
-	//	runtime.GOMAXPROCS(8)
-	runtime.GOMAXPROCS(1)
+	runtime.GOMAXPROCS(8)
+	//runtime.GOMAXPROCS(1)
 
 	/*
 		rand.Seed(time.Now().UnixNano())
@@ -31,20 +30,24 @@ func main() {
 	fmt.Println("analyzeBoard: ")
 	now := createSimpleBoard()
 	now.player = !now.player
-	now, ocena := now.evaluateAlfaBeta(3)
+	now, ocena := now.evaluateAlfaBeta(5, now.player)
 	//now.show()
-	//now.player = !now.player
-	//now, ocena = now.evaluateAlfaBeta(3)
+	now.player = !now.player
+	now, ocena = now.evaluateAlfaBeta(5, now.player)
 
 	count := 0
 
 	for i := 0; i < count; i++ {
-		//progress(i, count)
+		progress(i, count)
 
-		now, ocena = now.evaluateAlfaBeta(3)
+		now, ocena = now.evaluateAlfaBeta(2, now.player)
 		now.player = !now.player
-		now, ocena = now.evaluateAlfaBeta(3)
+		now.show()
+		now, ocena = now.evaluateAlfaBeta(2, now.player)
 		now.player = !now.player
+		now.show()
+
+		fmt.Println("Ruch", i+1)
 	}
 
 	//fmt.Println(now.player)

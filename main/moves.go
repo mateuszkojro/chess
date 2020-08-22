@@ -152,6 +152,10 @@ func isUpEmpty(now state) bool {
 // TEST
 func isUpEnemyPiece(now state) bool {
 	//return now.curAddr().getColor() != stepUp(now.curAddr().getColor()
+	//fmt.Println("is up enemy == true", now.curAddr().getColor() != now.addr(now.x, now.y+1).getColor())
+	if isUpEmpty(now) {
+		return false
+	}
 	return now.curAddr().getColor() != now.addr(now.x, now.y+1).getColor()
 }
 

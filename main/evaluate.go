@@ -3,7 +3,7 @@ package main
 import "fmt"
 
 // potrzebuje jakis min max
-
+//TODO mozna dodac zeby wchodzilo glebiej jezeli zauwazy szach to by pozwolilo oszukac troche glebokosc tam gdzie sie liczy
 func analyzeBoard(now state) int {
 	//fmt.Println("-------- new board ----------")
 	//now.show()
@@ -17,18 +17,19 @@ func analyzeBoard(now state) int {
 
 				if now.curAddr().getColor() == true {
 					//fmt.Println("+")
-					val += len(now.curAddr().possibleMoves(now))
+					//val += len(now.curAddr().possibleMoves(now))
 					val += (now.curAddr().value() * 10)
+					//.Println("True:", now.curAddr().value(), now.curAddr().whoami())
 				} else {
 					//fmt.Println("-")
-					val -= len(now.curAddr().possibleMoves(now))
+					//val -= len(now.curAddr().possibleMoves(now))
 					val -= (now.curAddr().value() * 10)
+					//fmt.Println("False:", now.curAddr().value(), now.curAddr().whoami())
 				}
 
 			}
 		}
 	}
-
 	//fmt.Println(val)
 
 	return val
@@ -62,7 +63,7 @@ func evaluate(now state, depth int) (state, int) {
 
 func progress(now, to int) {
 	fmt.Print("\r")
-	prog := now
+	prog := now + 1
 	fmt.Print(prog)
 	fmt.Print("/ ", to, " pola ")
 	fmt.Print("|")
@@ -75,23 +76,25 @@ func progress(now, to int) {
 	fmt.Print("|")
 }
 
-func (s state) evaluateAlfaBeta(depth int) (state, int) {
-	alfa := 200
-	beta := -200
+func (s state) evaluateAlfaBeta(depth int, color bool) (state, int) {
+	alfa := 2000
+	beta := -2000
 	var maks int // := alfaBeta(s.moves()[0], depth, alfa, beta, s.player)
 	var val int
 	var res state
-
+	s.player = color
 	//Refactor this for fucks sake
 	for y := 0; y < 8; y++ {
 		for x := 0; x < 8; x++ {
-			//progress(y*8+x, 64)
-			if s.addr(x, y).isEmpty() == false {
+			progress(y*8+x, 64)
+			if s.addr(x, y).isEmpty() == false || s.addr(x, y).getColor() == color {
 
 				s = s.setCur(x, y)
 				moves := s.moves()
+				res = moves[0]
 				for i := 0; i < len(moves); i++ {
-					val = alfaBeta(moves[i], depth, alfa, beta, s.player)
+
+					val = alfaBeta(moves[i], depth, alfa, beta, color)
 					if s.player == true {
 						maks = max(val, maks)
 					} else {
@@ -106,7 +109,7 @@ func (s state) evaluateAlfaBeta(depth int) (state, int) {
 
 		}
 	}
-	//fmt.Println("")
+	fmt.Print('\a')
 	return res, maks
 }
 
@@ -129,13 +132,16 @@ func alfaBeta(node state, depth int, alfa int, beta int, player bool) int {
 
 	//fmt.Println(analyzeBoard(node))
 
-	if depth == 0 /*|| (analyzeBoard(node) > 200 || analyzeBoard(node) < -200)*/ {
+	if depth == 0 || (analyzeBoard(node) > 2000 || analyzeBoard(node) < -2000) {
 		//fmt.Println("alfa beta:", node.x, node.y, "glebokosc", depth, node.player, "wartosc", analyzeBoard(node))
 		//node.show()
+		if analyzeBoard(node) > 2000 || analyzeBoard(node) < -2000 {
+			fmt.Println(analyzeBoard(node))
+		}
 		return analyzeBoard(node) // value
 	}
 	if player == false {
-		value := -1000
+		value := -10000
 		moves := node.moves()
 		for i := 0; i < len(moves); i++ {
 			// w sumie nie wiem czy ! player jest correct
@@ -148,7 +154,7 @@ func alfaBeta(node state, depth int, alfa int, beta int, player bool) int {
 		return value
 	}
 
-	value := 1000
+	value := 10000
 	moves := node.moves()
 	for i := 0; i < len(moves); i++ {
 		value = min(value, alfaBeta(moves[i], depth-1, alfa, beta, true))
