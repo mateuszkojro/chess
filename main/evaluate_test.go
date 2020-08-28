@@ -77,14 +77,15 @@ func TestTake(t *testing.T) {
 	board := createEmptyBoard()
 	board = board.set(pawn{false, false}, 1, 1)
 	board = board.set(queen{true}, 3, 1)
-	board.show()
 	var ocena int
-	board, ocena = board.evaluateAlfaBeta(2, true)
+	board, ocena = board.evaluateAlfaBeta(1, true)
 	if ocena < 90 {
 		t.Errorf("ocena nie jest poprawna %v - czyli pionek nie zostal zbity", ocena)
 		board.show()
 	}
 }
+
+//!! not working for some reason
 
 func TestMateIn1(t *testing.T) {
 	ocena := 0
@@ -95,7 +96,12 @@ func TestMateIn1(t *testing.T) {
 	board = board.set(king{true}, 6, 6)
 	board.player = true
 	fmt.Println(board.curAddr())
-	board, ocena = board.evaluateAlfaBeta(2, true)
+	board, ocena = board.evaluateAlfaBeta(16, true)
+	board.show()
+	board, ocena = board.evaluateAlfaBeta(16, false)
+	board.show()
+	board, ocena = board.evaluateAlfaBeta(16, true)
+
 	board.show()
 	fmt.Println(ocena)
 	//board.show()

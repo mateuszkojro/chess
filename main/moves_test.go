@@ -65,6 +65,16 @@ func TestCheckStep(t *testing.T) {
 		t.Errorf("Pionek na poczatku ma wiecej niz jeden ruch %v ", len(board.curAddr().possibleMoves(board)))
 	}
 }
+func TestChceckEnemyUp(t *testing.T) {
+	var board = createEmptyBoard()
+	board = board.set(queen{false}, 0, 1)
+	board = board.set(rook{true}, 0, 0)
+	board.player = true
+	board, x := board.evaluateAlfaBeta(0, board.player)
+	if x == 0 {
+		t.Errorf("Kurwa nie zbila pionka")
+	}
+}
 
 // ###########
 // #  LINES  #

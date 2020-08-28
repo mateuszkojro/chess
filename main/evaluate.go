@@ -7,7 +7,9 @@ import "fmt"
 func analyzeBoard(now state) int {
 	//fmt.Println("-------- new board ----------")
 	//now.show()
-
+	//fmt.Println("jestem w analizie")
+	//wKing := false
+	//bKing := true
 	val := 0
 	for y := 0; y < 8; y++ {
 		for x := 0; x < 8; x++ {
@@ -17,12 +19,12 @@ func analyzeBoard(now state) int {
 
 				if now.curAddr().getColor() == true {
 					//fmt.Println("+")
-					//val += len(now.curAddr().possibleMoves(now))
+					val += len(now.curAddr().possibleMoves(now))
 					val += (now.curAddr().value() * 10)
 					//.Println("True:", now.curAddr().value(), now.curAddr().whoami())
 				} else {
 					//fmt.Println("-")
-					//val -= len(now.curAddr().possibleMoves(now))
+					val -= len(now.curAddr().possibleMoves(now))
 					val -= (now.curAddr().value() * 10)
 					//fmt.Println("False:", now.curAddr().value(), now.curAddr().whoami())
 				}
@@ -77,8 +79,8 @@ func progress(now, to int) {
 }
 
 func (s state) evaluateAlfaBeta(depth int, color bool) (state, int) {
-	alfa := 2000
-	beta := -2000
+	alfa := 200000
+	beta := -200000
 	var maks int // := alfaBeta(s.moves()[0], depth, alfa, beta, s.player)
 	var val int
 	var res state
@@ -86,9 +88,9 @@ func (s state) evaluateAlfaBeta(depth int, color bool) (state, int) {
 	//Refactor this for fucks sake
 	for y := 0; y < 8; y++ {
 		for x := 0; x < 8; x++ {
-			progress(y*8+x, 64)
-			if s.addr(x, y).isEmpty() == false || s.addr(x, y).getColor() == color {
-
+			//progress(y*8+x, 64)
+			if s.addr(x, y).isEmpty() == false && s.addr(x, y).getColor() == color {
+				//fmt.Println(x, y, s.addr(x, y).whoami())
 				s = s.setCur(x, y)
 				moves := s.moves()
 				res = moves[0]
@@ -135,32 +137,29 @@ func alfaBeta(node state, depth int, alfa int, beta int, player bool) int {
 	if depth == 0 || (analyzeBoard(node) > 2000 || analyzeBoard(node) < -2000) {
 		//fmt.Println("alfa beta:", node.x, node.y, "glebokosc", depth, node.player, "wartosc", analyzeBoard(node))
 		//node.show()
-		if analyzeBoard(node) > 2000 || analyzeBoard(node) < -2000 {
-			fmt.Println(analyzeBoard(node))
-		}
 		return analyzeBoard(node) // value
 	}
 	if player == false {
-		value := -10000
+		value := -200000
 		moves := node.moves()
 		for i := 0; i < len(moves); i++ {
 			// w sumie nie wiem czy ! player jest correct
 			value = max(value, alfaBeta(moves[i], depth-1, alfa, beta, false))
 			alfa = max(alfa, value)
 			if alfa >= beta {
-				//break
+				break
 			}
 		}
 		return value
 	}
 
-	value := 10000
+	value := 200000
 	moves := node.moves()
 	for i := 0; i < len(moves); i++ {
 		value = min(value, alfaBeta(moves[i], depth-1, alfa, beta, true))
 		beta = min(beta, value)
 		if beta <= alfa {
-			//break
+			break
 		}
 	}
 	return value

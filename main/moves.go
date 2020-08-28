@@ -151,16 +151,12 @@ func isUpEmpty(now state) bool {
 
 // TEST
 func isUpEnemyPiece(now state) bool {
-	//return now.curAddr().getColor() != stepUp(now.curAddr().getColor()
-	//fmt.Println("is up enemy == true", now.curAddr().getColor() != now.addr(now.x, now.y+1).getColor())
-	if isUpEmpty(now) {
-		return false
-	}
 	return now.curAddr().getColor() != now.addr(now.x, now.y+1).getColor()
 }
 
-// TEST
+// !!not using
 func checkStepUp(now state) bool {
+	//fmt.Println("depriciated - check step")
 	//fmt.Println("is border up: ", isBorderUp(now))
 	if isBorderUp(now) {
 		return true
@@ -176,16 +172,16 @@ func stepUp(now state) state {
 func up(now state) []state {
 	//possibleMoves := make([]state, 0, 8)
 	var possibleMoves []state
-	//fmt.Println("jestem poza petla", checkStepUp(now))
-	for checkStepUp(now) == false {
-		//fmt.Println("jestem w petli")
-		if isUpEnemyPiece(now) {
+	for isBorderUp(now) == false {
+		if isUpEmpty(now) {
+			now = stepUp(now)
+			possibleMoves = append(possibleMoves, now)
+		} else if isUpEnemyPiece(now) {
 			possibleMoves = append(possibleMoves, stepUp(now))
 			break
+		} else {
+			break
 		}
-		now = stepUp(now)
-		possibleMoves = append(possibleMoves, now)
-
 	}
 	return possibleMoves
 }
@@ -215,6 +211,8 @@ func isDownEnemyPiece(now state) bool {
 
 // TEST
 func checkStepDown(now state) bool {
+	//fmt.Println("depriciated - check step")
+
 	//fmt.Println("is border Down: ", isBorderDown(now))
 	if isBorderDown(now) {
 		return true
@@ -231,15 +229,16 @@ func down(now state) []state {
 	//possibleMoves := make([]state, 0, 8)
 	var possibleMoves []state
 	//fmt.Println("jestem poza petla", checkStepDown(now))
-	for checkStepDown(now) == false {
-		//fmt.Println("jestem w petli")
-		if isDownEnemyPiece(now) {
+	for isBorderDown(now) == false {
+		if isDownEmpty(now) {
+			now = stepDown(now)
+			possibleMoves = append(possibleMoves, now)
+		} else if isDownEnemyPiece(now) {
 			possibleMoves = append(possibleMoves, stepDown(now))
 			break
+		} else {
+			break
 		}
-		now = stepDown(now)
-		possibleMoves = append(possibleMoves, now)
-
 	}
 	return possibleMoves
 }
@@ -268,6 +267,8 @@ func isLeftEnemyPiece(now state) bool {
 
 // TEST
 func checkStepLeft(now state) bool {
+	//fmt.Println("depriciated - check step")
+
 	//fmt.Println("is border Left: ", isBorderLeft(now))
 	if isBorderLeft(now) {
 		return true
@@ -281,18 +282,17 @@ func stepLeft(now state) state {
 }
 
 func left(now state) []state {
-	//possibleMoves := make([]state, 0, 8)
 	var possibleMoves []state
-	//fmt.Println("jestem poza petla", checkStepLeft(now))
-	for checkStepLeft(now) == false {
-		//fmt.Println("jestem w petli")
-		if isLeftEnemyPiece(now) {
+	for isBorderLeft(now) == false {
+		if isLeftEmpty(now) {
+			now = stepLeft(now)
+			possibleMoves = append(possibleMoves, now)
+		} else if isLeftEnemyPiece(now) {
 			possibleMoves = append(possibleMoves, stepLeft(now))
 			break
+		} else {
+			break
 		}
-		now = stepLeft(now)
-		possibleMoves = append(possibleMoves, now)
-
 	}
 	return possibleMoves
 }
@@ -321,6 +321,8 @@ func isRightEnemyPiece(now state) bool {
 
 // TEST
 func checkStepRight(now state) bool {
+	//fmt.Println("depriciated - check step")
+
 	//fmt.Println("is border Right: ", isBorderRight(now))
 	if isBorderRight(now) {
 		return true
@@ -334,18 +336,17 @@ func stepRight(now state) state {
 }
 
 func right(now state) []state {
-	//possibleMoves := make([]state, 0, 8)
 	var possibleMoves []state
-	//fmt.Println("jestem poza petla", checkStepRight(now))
-	for checkStepRight(now) == false {
-		//fmt.Println("jestem w petli")
-		if isRightEnemyPiece(now) {
+	for isBorderRight(now) == false {
+		if isRightEmpty(now) {
+			now = stepRight(now)
+			possibleMoves = append(possibleMoves, now)
+		} else if isRightEnemyPiece(now) {
 			possibleMoves = append(possibleMoves, stepRight(now))
 			break
+		} else {
+			break
 		}
-		now = stepRight(now)
-		possibleMoves = append(possibleMoves, now)
-
 	}
 	return possibleMoves
 }
@@ -397,6 +398,8 @@ func isLeftUpEnemyPiece(now state) bool {
 
 // TEST
 func checkStepLeftUp(now state) bool {
+	//fmt.Println("depriciated - check step")
+
 	//fmt.Println("is border LeftUp: ", isBorderLeftUp(now))
 	if isBorderLeftUp(now) {
 		return true
@@ -410,18 +413,17 @@ func stepLeftUp(now state) state {
 }
 
 func leftUp(now state) []state {
-	//possibleMoves := make([]state, 0, 8)
 	var possibleMoves []state
-	//fmt.Println("jestem poza petla", checkStepLeftUp(now))
-	for checkStepLeftUp(now) == false {
-		//fmt.Println("jestem w petli")
-		if isLeftUpEnemyPiece(now) {
+	for isBorderLeftUp(now) == false {
+		if isLeftUpEmpty(now) {
+			now = stepLeftUp(now)
+			possibleMoves = append(possibleMoves, now)
+		} else if isLeftUpEnemyPiece(now) {
 			possibleMoves = append(possibleMoves, stepLeftUp(now))
 			break
+		} else {
+			break
 		}
-		now = stepLeftUp(now)
-		possibleMoves = append(possibleMoves, now)
-
 	}
 	return possibleMoves
 }
@@ -451,6 +453,8 @@ func isRightUpEnemyPiece(now state) bool {
 
 // TEST
 func checkStepRightUp(now state) bool {
+	//fmt.Println("depriciated - check step")
+
 	//fmt.Println("is border RightUp: ", isBorderRightUp(now))
 	if isBorderRightUp(now) {
 		return true
@@ -464,18 +468,17 @@ func stepRightUp(now state) state {
 }
 
 func rightUp(now state) []state {
-	//possibleMoves := make([]state, 0, 8)
 	var possibleMoves []state
-	//fmt.Println("jestem poza petla", checkStepRightUp(now))
-	for checkStepRightUp(now) == false {
-		//fmt.Println("jestem w petli")
-		if isRightUpEnemyPiece(now) {
+	for isBorderRightUp(now) == false {
+		if isRightUpEmpty(now) {
+			now = stepRightUp(now)
+			possibleMoves = append(possibleMoves, now)
+		} else if isRightUpEnemyPiece(now) {
 			possibleMoves = append(possibleMoves, stepRightUp(now))
 			break
+		} else {
+			break
 		}
-		now = stepRightUp(now)
-		possibleMoves = append(possibleMoves, now)
-
 	}
 	return possibleMoves
 }
@@ -503,6 +506,8 @@ func isLeftDownEnemyPiece(now state) bool {
 
 // TEST
 func checkStepLeftDown(now state) bool {
+	//fmt.Println("depriciated - check step")
+
 	//fmt.Println("is border LeftDown: ", isBorderLeftDown(now))
 	if isBorderLeftDown(now) {
 		return true
@@ -516,18 +521,17 @@ func stepLeftDown(now state) state {
 }
 
 func leftDown(now state) []state {
-	//possibleMoves := make([]state, 0, 8)
 	var possibleMoves []state
-	//fmt.Println("jestem poza petla", checkStepLeftDown(now))
-	for checkStepLeftDown(now) == false {
-		//fmt.Println("jestem w petli")
-		if isLeftDownEnemyPiece(now) {
+	for isBorderLeftDown(now) == false {
+		if isLeftDownEmpty(now) {
+			now = stepLeftDown(now)
+			possibleMoves = append(possibleMoves, now)
+		} else if isLeftDownEnemyPiece(now) {
 			possibleMoves = append(possibleMoves, stepLeftDown(now))
 			break
+		} else {
+			break
 		}
-		now = stepLeftDown(now)
-		possibleMoves = append(possibleMoves, now)
-
 	}
 	return possibleMoves
 }
@@ -557,6 +561,8 @@ func isRightDownEnemyPiece(now state) bool {
 
 // TEST
 func checkStepRightDown(now state) bool {
+	//fmt.Println("depriciated - check step")
+
 	//fmt.Println("is border RightDown: ", isBorderRightDown(now))
 	if isBorderRightDown(now) {
 		return true
@@ -570,18 +576,17 @@ func stepRightDown(now state) state {
 }
 
 func rightDown(now state) []state {
-	//possibleMoves := make([]state, 0, 8)
 	var possibleMoves []state
-	//fmt.Println("jestem poza petla", checkStepRightDown(now))
-	for checkStepRightDown(now) == false {
-		//fmt.Println("jestem w petli")
-		if isRightDownEnemyPiece(now) {
+	for isBorderRightDown(now) == false {
+		if isRightDownEmpty(now) {
+			now = stepRightDown(now)
+			possibleMoves = append(possibleMoves, now)
+		} else if isRightDownEnemyPiece(now) {
 			possibleMoves = append(possibleMoves, stepRightDown(now))
 			break
+		} else {
+			break
 		}
-		now = stepRightDown(now)
-		possibleMoves = append(possibleMoves, now)
-
 	}
 	return possibleMoves
 }
