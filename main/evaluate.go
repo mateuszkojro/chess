@@ -88,7 +88,7 @@ func (s state) evaluateAlfaBeta(depth int, color bool) (state, int) {
 	//Refactor this for fucks sake
 	for y := 0; y < 8; y++ {
 		for x := 0; x < 8; x++ {
-			//progress(y*8+x, 64)
+			progress(y*8+x, 64)
 			if s.addr(x, y).isEmpty() == false && s.addr(x, y).getColor() == color {
 				//fmt.Println(x, y, s.addr(x, y).whoami())
 				s = s.setCur(x, y)
@@ -133,8 +133,8 @@ func alfaBeta(node state, depth int, alfa int, beta int, player bool) int {
 	node.player = player
 
 	//fmt.Println(analyzeBoard(node))
-
-	if depth == 0 || (analyzeBoard(node) > 2000 || analyzeBoard(node) < -2000) {
+	ocena := analyzeBoard(node)
+	if depth == 0 || (ocena > 2000 || ocena < -2000) {
 		//fmt.Println("alfa beta:", node.x, node.y, "glebokosc", depth, node.player, "wartosc", analyzeBoard(node))
 		//node.show()
 		return analyzeBoard(node) // value

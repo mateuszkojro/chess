@@ -156,7 +156,6 @@ func isUpEnemyPiece(now state) bool {
 
 // !!not using
 func checkStepUp(now state) bool {
-	//fmt.Println("depriciated - check step")
 	//fmt.Println("is border up: ", isBorderUp(now))
 	if isBorderUp(now) {
 		return true

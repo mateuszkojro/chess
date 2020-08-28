@@ -2,7 +2,11 @@ package main
 
 func convertToTxt(board state) string {
 	var res string
-
+	if board.player == true {
+		res = res + "p"
+	} else {
+		res = res + "m"
+	}
 	for y := 0; y < 8; y++ {
 		for x := 0; x < 8; x++ {
 			res = res + board.addr(x, y).letterRepresent()

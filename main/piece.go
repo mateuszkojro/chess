@@ -1,7 +1,5 @@
 package main
 
-import "fmt"
-
 func colorText(text string) string {
 	colorReset := "\033[0m"
 	color := "\033[31m"
@@ -35,7 +33,7 @@ func (e empty) possibleMoves(now state) []state {
 	return nil
 }
 func (e empty) getColor() bool {
-	return e.color
+	return true
 }
 
 func (e empty) isEmpty() bool {
@@ -130,33 +128,6 @@ func (k king) possibleMoves(now state) []state {
 			possibleMoves = append(possibleMoves, stepRightDown(now))
 		}
 	}
-
-	/*
-		if !checkStepLeftUp(now) {
-			possibleMoves = append(possibleMoves, stepLeftUp(now))
-		}
-		if !checkStepUp(now) {
-			possibleMoves = append(possibleMoves, stepUp(now))
-		}
-		if !checkStepRightUp(now) {
-			possibleMoves = append(possibleMoves, stepRightUp(now))
-		}
-		if !checkStepLeft(now) {
-			possibleMoves = append(possibleMoves, stepLeft(now))
-		}
-		if !checkStepRight(now) {
-			possibleMoves = append(possibleMoves, stepRight(now))
-		}
-		if !checkStepLeftDown(now) {
-			possibleMoves = append(possibleMoves, stepLeftDown(now))
-		}
-		if !checkStepDown(now) {
-			possibleMoves = append(possibleMoves, stepDown(now))
-		}
-		if !checkStepRightDown(now) {
-			possibleMoves = append(possibleMoves, stepRightDown(now))
-		}
-	*/
 	return possibleMoves
 }
 func (k king) getColor() bool {
@@ -310,14 +281,49 @@ func (k knight) possibleMoves(now state) []state {
 	var possibleMoves []state
 
 	// wspolrzedne kazdego ruchu podzielone na rogi
-	addrs := [8][2]int{
-		{now.x + 1, now.y + 2}, {now.x + 2, now.y + 1},
-		{now.x + 1, now.y - 2}, {now.x + 2, now.y - 2},
-		{now.x - 1, now.y + 2}, {now.x - 2, now.y + 1},
-		{now.x - 1, now.y - 2}, {now.x - 2, now.y - 1}}
 
-	fmt.Println(addrs)
-	return possibleMoves
+	temp := now.setCur(now.x-1, now.y+1)
+	if !isBorderLeftUp(temp) {
+		if isLeftEnemyPiece(temp) || isLeftEmpty(temp) {
+			possibleMoves = append(possibleMoves, stepLeft(temp))
+		}
+		if isUpEnemyPiece(temp) || isUpEmpty(temp) {
+			possibleMoves = append(possibleMoves, stepUp(temp))
+		}
+	}
+
+	temp = now.setCur(now.x+1, now.y+1)
+	if !isBorderRightUp(temp) {
+		if isRightEnemyPiece(temp) || isRightEmpty(temp) {
+			possibleMoves = append(possibleMoves, stepLeft(temp))
+		}
+		if isUpEnemyPiece(temp) || isUpEmpty(temp) {
+			possibleMoves = append(possibleMoves, stepUp(temp))
+		}
+	}
+
+	temp = now.setCur(now.x-1, now.y-1)
+	if !isBorderLeftDown(temp) {
+		if isLeftEnemyPiece(temp) || isLeftEmpty(temp) {
+			possibleMoves = append(possibleMoves, stepLeft(temp))
+		}
+		if isDownEnemyPiece(temp) || isDownEmpty(temp) {
+			possibleMoves = append(possibleMoves, stepDown(temp))
+		}
+	}
+
+	temp = now.setCur(now.x+1, now.y-1)
+	if !isBorderRightDown(temp) {
+		if isRightEnemyPiece(temp) || isRightEmpty(temp) {
+			possibleMoves = append(possibleMoves, stepLeft(temp))
+		}
+		if isDownEnemyPiece(temp) || isDownEmpty(temp) {
+			possibleMoves = append(possibleMoves, stepDown(temp))
+		}
+	}
+
+	//fmt.Println(addrs)
+	return possibleMoves //possibleMoves
 
 }
 func (k knight) getColor() bool {
@@ -359,25 +365,60 @@ func (p pawn) possibleMoves(now state) []state {
 	//var possibleMoves = make([]state, 0, 1) //[]state
 	var possibleMoves []state
 	if p.getColor() == true {
-		if !checkStepUp(now) {
-			now = stepUp(now)
-			possibleMoves = append(possibleMoves, now)
 
-			//if !p.moved {
-			//	possibleMoves = append(possibleMoves, stepUp(now))
-			//	p.moved = true
-			//}
+		if isBorderUp(now) {
+			if isUpEmpty(now) {
+				now = stepUp(now)
+				possibleMoves = append(possibleMoves, now)
+				if !p.moved && isUpEmpty(now) {
+					possibleMoves = append(possibleMoves, stepUp(now))
+				}
+				p.moved = true
+			}
+		} else {
+			if !isBorderLeftUp(now) {
+				if isLeftUpEnemyPiece(now) {
+					possibleMoves = append(possibleMoves, stepLeftUp(now))
+					p.moved = true
+				}
+			}
+			if !isBorderRightUp(now) {
+				if isRightUpEnemyPiece(now) {
+					possibleMoves = append(possibleMoves, stepRightUp(now))
+					p.moved = true
+				}
+			}
 		}
+
 	} else {
-		if !checkStepDown(now) {
-			now = stepDown(now)
-			possibleMoves = append(possibleMoves, now)
+		if !isBorderDown(now) {
+			if isDownEmpty(now) {
+				now = stepDown(now)
+				possibleMoves = append(possibleMoves, now)
 
-			//if !p.moved {
-			//		possibleMoves = append(possibleMoves, stepDown(now))
-			//		p.moved = true
-			//}
+				if !p.moved && isUpEmpty(now) {
+					possibleMoves = append(possibleMoves, stepDown(now))
+				}
+				p.moved = true
+			}
+
+		} else {
+
+			if !isBorderLeftDown(now) {
+				if isLeftDownEnemyPiece(now) {
+					possibleMoves = append(possibleMoves, stepLeftDown(now))
+					p.moved = true
+				}
+			}
+			if !isBorderRightDown(now) {
+				if isRightDownEnemyPiece(now) {
+					possibleMoves = append(possibleMoves, stepRightDown(now))
+					p.moved = true
+				}
+			}
+
 		}
+
 	}
 
 	return possibleMoves
@@ -399,65 +440,3 @@ func (p pawn) whoami() string {
 func (p pawn) value() int {
 	return 1
 }
-
-// !!jakis pomysl na pawna ale nie dziala
-/*
-unc (p pawn) possibleMoves(now state) []state {
-	//var possibleMoves = make([]state, 0, 1) //[]state
-	var possibleMoves []state
-	if p.getColor() == true {
-		if isBorderUp(now) == false {
-			if isUpEmpty(now) {
-				now = stepUp(now)
-				possibleMoves = append(possibleMoves, now)
-				if !p.moved {
-					p.moved = true
-					if isUpEmpty(now) {
-						possibleMoves = append(possibleMoves, stepUp(now))
-					}
-				}
-			}
-			if !isBorderLeftUp(now) {
-				if isLeftUpEnemyPiece(now) {
-					p.moved = true
-					possibleMoves = append(possibleMoves, stepLeftUp(now))
-				}
-			}
-			if !isBorderRightUp(now) {
-				if isRightUpEnemyPiece(now) {
-					p.moved = true
-					possibleMoves = append(possibleMoves, stepRightUp(now))
-				}
-			}
-		}
-	} else {
-		if isBorderDown(now) == false {
-			if isDownEmpty(now) {
-				now = stepDown(now)
-				possibleMoves = append(possibleMoves, now)
-				if !p.moved {
-					p.moved = true
-					if isDownEmpty(now) {
-						possibleMoves = append(possibleMoves, stepDown(now))
-					}
-				}
-			}
-			if !isBorderLeftDown(now) {
-				if isLeftDownEnemyPiece(now) {
-					p.moved = true
-					possibleMoves = append(possibleMoves, stepLeftDown(now))
-				}
-			}
-			if !isBorderRightDown(now) {
-				if isRightDownEnemyPiece(now) {
-					p.moved = true
-					possibleMoves = append(possibleMoves, stepRightDown(now))
-				}
-			}
-
-		}
-	}
-
-	return possibleMoves
-}
-*/
