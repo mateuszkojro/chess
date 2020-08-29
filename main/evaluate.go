@@ -5,28 +5,19 @@ import "fmt"
 // potrzebuje jakis min max
 //TODO mozna dodac zeby wchodzilo glebiej jezeli zauwazy szach to by pozwolilo oszukac troche glebokosc tam gdzie sie liczy
 func analyzeBoard(now state) int {
-	//fmt.Println("-------- new board ----------")
-	//now.show()
-	//fmt.Println("jestem w analizie")
-	//wKing := false
-	//bKing := true
+
 	val := 0
 	for y := 0; y < 8; y++ {
 		for x := 0; x < 8; x++ {
 			if now.addr(x, y).isEmpty() == false {
 				now = now.setCur(x, y)
-				//fmt.Println("cord: ", x, y, "piece: ", now.addr(x, y).whoami(), "color: ", now.addr(x, y).getColor(), "value: ", now.addr(x, y).value(), "possible moves: ", len(now.addr(x, y).possibleMoves(now)))
 
 				if now.curAddr().getColor() == true {
-					//fmt.Println("+")
 					val += len(now.curAddr().possibleMoves(now))
 					val += (now.curAddr().value() * 10)
-					//.Println("True:", now.curAddr().value(), now.curAddr().whoami())
 				} else {
-					//fmt.Println("-")
 					val -= len(now.curAddr().possibleMoves(now))
 					val -= (now.curAddr().value() * 10)
-					//fmt.Println("False:", now.curAddr().value(), now.curAddr().whoami())
 				}
 
 			}
@@ -79,6 +70,7 @@ func progress(now, to int) {
 }
 
 func (s state) evaluateAlfaBeta(depth int, color bool) (state, int) {
+	fmt.Println("depriciated: evalautaAlfaBeta")
 	alfa := 200000
 	beta := -200000
 	var maks int // := alfaBeta(s.moves()[0], depth, alfa, beta, s.player)
@@ -115,6 +107,48 @@ func (s state) evaluateAlfaBeta(depth int, color bool) (state, int) {
 	return res, maks
 }
 
+type info struct {
+	ocena int
+	move  state
+}
+
+func (s state) evaluateAlfaBeta_dev(depth int, color bool) (state, int) {
+	alfa := 2000
+	beta := -2000
+	s.player = color
+	var possible []info
+	for y := 0; y < 8; y++ {
+		for x := 0; x < 8; x++ {
+			progress(y*8+x, 64)
+			s = s.setCur(x, y)
+			if !s.addr(x, y).isEmpty() || !s.addr(x, y).getColor() {
+				moves := s.moves()
+				for i := 0; i < len(moves); i++ {
+					ocena := alfaBeta(moves[i], depth, alfa, beta, color)
+					possible = append(possible, info{ocena, moves[i]})
+				}
+			}
+		}
+	}
+	if color {
+		max := info{beta * 100, state{0, 0, [64]piece{}, color}}
+		for i := 0; i < len(possible); i++ {
+			if possible[i].ocena > max.ocena {
+				max = possible[i]
+			}
+		}
+		return max.move, max.ocena
+	}
+	min := info{alfa * 100, state{0, 0, [64]piece{}, color}}
+	for i := 0; i < len(possible); i++ {
+		if possible[i].ocena < min.ocena {
+			min = possible[i]
+		}
+	}
+	return min.move, min.ocena
+
+}
+
 func max(x, y int) int {
 	if x > y {
 		return x
@@ -147,7 +181,7 @@ func alfaBeta(node state, depth int, alfa int, beta int, player bool) int {
 			value = max(value, alfaBeta(moves[i], depth-1, alfa, beta, false))
 			alfa = max(alfa, value)
 			if alfa >= beta {
-				break
+				//break
 			}
 		}
 		return value
@@ -159,7 +193,7 @@ func alfaBeta(node state, depth int, alfa int, beta int, player bool) int {
 		value = min(value, alfaBeta(moves[i], depth-1, alfa, beta, true))
 		beta = min(beta, value)
 		if beta <= alfa {
-			break
+			//break
 		}
 	}
 	return value

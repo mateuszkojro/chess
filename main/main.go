@@ -41,13 +41,14 @@ func playWithFile(path string, sec int) {
 			boardsText = readFromFile(path)
 		}
 		board = convertFromTxt(boardsText[len(boardsText)-1])
-		board, ocena = board.evaluateAlfaBeta(20, board.player)
+		board.player = !board.player
+		board, ocena = board.evaluateAlfaBeta_dev(2, board.player)
 		fmt.Println("Ruch:", len(boardsText)-1, " Ocena:", ocena)
 		writeToFile(path, convertToTxt(board))
 		/*output, _:=*/ exec.Command("python", "show.py").Output()
 		// /* ruchy czranego
 		board.player = !board.player
-		board, ocena = board.evaluateAlfaBeta(20, board.player)
+		board, ocena = board.evaluateAlfaBeta_dev(2, board.player)
 		fmt.Println("Ruch:", len(boardsText)-1, " Ocena:", ocena)
 		writeToFile(path, convertToTxt(board))
 		exec.Command("python", "show.py").Output()
@@ -62,10 +63,10 @@ func playWithYourself() {
 	fmt.Println("analyzeBoard: ")
 	now := createSimpleBoard()
 	now.player = true
-	now, ocena := now.evaluateAlfaBeta(101, now.player)
+	now, ocena := now.evaluateAlfaBeta_dev(101, now.player)
 	now.show()
 	now.player = !now.player
-	now, ocena = now.evaluateAlfaBeta(101, now.player)
+	now, ocena = now.evaluateAlfaBeta_dev(101, now.player)
 	now.show()
 	now.player = !now.player
 
@@ -74,11 +75,11 @@ func playWithYourself() {
 	for i := 0; i < count; i++ {
 		progress(i, count)
 
-		now, ocena = now.evaluateAlfaBeta(101, now.player)
+		now, ocena = now.evaluateAlfaBeta_dev(101, now.player)
 		now.player = !now.player
 		now.show()
 		fmt.Println(ocena)
-		now, ocena = now.evaluateAlfaBeta(101, now.player)
+		now, ocena = now.evaluateAlfaBeta_dev(101, now.player)
 		now.player = !now.player
 		now.show()
 		fmt.Println(ocena)

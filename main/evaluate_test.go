@@ -96,11 +96,11 @@ func TestMateIn1(t *testing.T) {
 	board = board.set(king{true}, 6, 6)
 	board.player = true
 	fmt.Println(board.curAddr())
-	board, ocena = board.evaluateAlfaBeta(16, true)
+	board, ocena = board.evaluateAlfaBeta_dev(2, true)
 	board.show()
-	board, ocena = board.evaluateAlfaBeta(16, false)
+	board, ocena = board.evaluateAlfaBeta_dev(2, false)
 	board.show()
-	board, ocena = board.evaluateAlfaBeta(16, true)
+	board, ocena = board.evaluateAlfaBeta_dev(2, true)
 
 	board.show()
 	fmt.Println(ocena)

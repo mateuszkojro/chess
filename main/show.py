@@ -1,9 +1,36 @@
+"""
+Module used to assist playing chess maches beetwen computers
+"""
+import doctest
 import chess
 import chess.svg
 
 
-def convert_to_their(text):
+def test(mode):
+    """ Test the module """
+    if mode:
+        doctest.testmod()
+
+
+convert = {
+    'a': 'k',
+    'A': 'K',
+    'b': 'q',
+    'B': 'Q',
+    'c': 'r',
+    'C': 'R',
+    'd': 'b',
+    'D': 'B',
+    'e': 'n',
+    'E': 'N',
+    'f': 'p',
+    'F': 'P',
+}
+
+
+def convert_to_FEA(text):
     res = []
+    color = None
     n = 0
     for i, letter in enumerate(text):
         if letter == 'm':
@@ -53,10 +80,11 @@ lines = []
 for line in f:
     lines.append(line)
 
-fen_str = "".join(convert_to_their(str(lines[len(lines) - 1:])))
+fen_str = "".join(convert_to_FEA(str(lines[len(lines) - 1:])))
 fen_str = fen_str[1:-1]
 fen_str = fen_str + " w KQkq - 0 1"
 board = chess.Board(fen_str)
+# print(chess.svg.board(board=board))
 f.close()
 f = open('/tmp/render.svg', 'w')
 f.write(str(chess.svg.board(board=board)))

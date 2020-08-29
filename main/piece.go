@@ -366,13 +366,13 @@ func (p pawn) possibleMoves(now state) []state {
 	var possibleMoves []state
 	if p.getColor() == true {
 
-		if isBorderUp(now) {
+		if !isBorderUp(now) {
 			if isUpEmpty(now) {
 				now = stepUp(now)
 				possibleMoves = append(possibleMoves, now)
-				if !p.moved && isUpEmpty(now) {
-					possibleMoves = append(possibleMoves, stepUp(now))
-				}
+				//if !p.moved && isUpEmpty(now) {
+				//	possibleMoves = append(possibleMoves, stepUp(now))
+				//}
 				p.moved = true
 			}
 		} else {
@@ -396,9 +396,9 @@ func (p pawn) possibleMoves(now state) []state {
 				now = stepDown(now)
 				possibleMoves = append(possibleMoves, now)
 
-				if !p.moved && isUpEmpty(now) {
-					possibleMoves = append(possibleMoves, stepDown(now))
-				}
+				//if !p.moved && isDownEmpty(now) {
+				//	possibleMoves = append(possibleMoves, stepDown(now))
+				//}
 				p.moved = true
 			}
 
