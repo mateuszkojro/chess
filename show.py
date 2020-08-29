@@ -1,6 +1,5 @@
 import chess
-import chess.svg
-
+import chess.svg    
 
 def convert_to_their(text):
     res = []

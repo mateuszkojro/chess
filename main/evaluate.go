@@ -2,7 +2,6 @@ package main
 
 import "fmt"
 
-// potrzebuje jakis min max
 //TODO mozna dodac zeby wchodzilo glebiej jezeli zauwazy szach to by pozwolilo oszukac troche glebokosc tam gdzie sie liczy
 func analyzeBoard(now state) int {
 
@@ -23,8 +22,6 @@ func analyzeBoard(now state) int {
 			}
 		}
 	}
-	//fmt.Println(val)
-
 	return val
 }
 
@@ -77,7 +74,7 @@ func (s state) evaluateAlfaBeta(depth int, color bool) (state, int) {
 	var val int
 	var res state
 	s.player = color
-	//Refactor this for fucks sake
+	//TODO Refactor this for fucks sake
 	for y := 0; y < 8; y++ {
 		for x := 0; x < 8; x++ {
 			progress(y*8+x, 64)
@@ -166,18 +163,14 @@ func min(x, y int) int {
 func alfaBeta(node state, depth int, alfa int, beta int, player bool) int {
 	node.player = player
 
-	//fmt.Println(analyzeBoard(node))
 	ocena := analyzeBoard(node)
 	if depth == 0 || (ocena > 2000 || ocena < -2000) {
-		//fmt.Println("alfa beta:", node.x, node.y, "glebokosc", depth, node.player, "wartosc", analyzeBoard(node))
-		//node.show()
 		return analyzeBoard(node) // value
 	}
 	if player == false {
 		value := -200000
 		moves := node.moves()
 		for i := 0; i < len(moves); i++ {
-			// w sumie nie wiem czy ! player jest correct
 			value = max(value, alfaBeta(moves[i], depth-1, alfa, beta, false))
 			alfa = max(alfa, value)
 			if alfa >= beta {

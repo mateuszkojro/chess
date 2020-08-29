@@ -28,7 +28,6 @@ func readFromFile(path string) []string {
 	return res
 }
 
-// !! Uzywam czystego alfa beta nie tego ok
 func playWithFile(path string, sec int) {
 	board := createSimpleBoard()
 	ocena := 0
@@ -96,8 +95,8 @@ func playWithYourself() {
 }
 
 func main() {
-	runtime.GOMAXPROCS(8)
-	//runtime.GOMAXPROCS(1)
+	//runtime.GOMAXPROCS(8)
+	runtime.GOMAXPROCS(1)
 	playWithFile("./dane", 5)
 	//writeToFile("./dane", convertToTxt(createSimpleBoard()))
 	//playWithYourself()
