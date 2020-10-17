@@ -1,4 +1,3 @@
-
 package main
 
 import "fmt"
@@ -6,4 +5,5 @@ import "fmt"
 // cos sie dzieje
 func main() {
 	fmt.Println("Hello, world.")
+
 }

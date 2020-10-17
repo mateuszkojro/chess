@@ -33,26 +33,23 @@ func playWithFile(path string, sec int) {
 	ocena := 0
 	for i := 0; i < 10; i++ {
 		fmt.Println("Reading from file...Now")
+		
 		boardsText := readFromFile(path)
+
 		for boardsText[len(boardsText)-1][0] == '*' {
 			fmt.Println("Another player didnt play yet going to sleep for 10 s")
 			time.Sleep(10 * time.Second)
 			boardsText = readFromFile(path)
 		}
+		
 		board = convertFromTxt(boardsText[len(boardsText)-1])
 		board.player = !board.player
-		board, ocena = board.evaluateAlfaBeta_dev(2, board.player)
-		fmt.Println("Ruch:", len(boardsText)-1, " Ocena:", ocena)
-		writeToFile(path, convertToTxt(board))
-		/*output, _:=*/ exec.Command("python", "show.py").Output()
-		// /* ruchy czranego
-		board.player = !board.player
+
 		board, ocena = board.evaluateAlfaBeta_dev(2, board.player)
 		fmt.Println("Ruch:", len(boardsText)-1, " Ocena:", ocena)
 		writeToFile(path, convertToTxt(board))
 		exec.Command("python", "show.py").Output()
-		//koniec ruchy czranego */
-		//fmt.Println("Linux said:", string(output))
+		
 		fmt.Println("Going to sleep for", sec, "seconds")
 		time.Sleep(time.Duration(sec) * time.Second)
 
@@ -96,6 +93,7 @@ func playWithYourself() {
 	now.show()
 	fmt.Println("ocena: ", ocena)
 }
+
 
 func main() {
 	//runtime.GOMAXPROCS(8)
